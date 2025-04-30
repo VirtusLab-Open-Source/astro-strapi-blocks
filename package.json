@@ -1,12 +1,32 @@
 {
   "name": "@sensinum/astro-strapi-blocks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Astro components for Strapi Block Field",
   "type": "module",
   "main": "./src/components/StrapiBlocks.astro",
   "types": "./src/index.d.ts",
+  "author": {
+    "name": "Sensinum / VirtusLab",
+    "email": "contact@sensinum.com",
+    "url": "https://sensinum.com"
+  },
+  "maintainers": [
+    {
+      "name": "@cyp3rius",
+      "email": "mziarko@virtuslab.com",
+      "url": "https://sensinum.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VirtusLab-Open-Source/astro-strapi-blocks"
+  },
   "exports": {
-    ".": "./src/components/StrapiBlocks.astro",
+    ".": {
+      "types": "./src/index.d.ts",
+      "source": "./src/components/StrapiBlocks.astro",
+      "default": "./src/components/StrapiBlocks.astro"
+    },
     "./package.json": "./package.json"
   },
   "files": [

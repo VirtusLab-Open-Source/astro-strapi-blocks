@@ -2,7 +2,7 @@
   <h1>Astro Strapi Blocks</h1>
   <p>Astro Components package for Strapi 5 Blocks Field integration</p>
   <a href="https://www.npmjs.org/package/@sensinum/astro-strapi-blocks">
-    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/VirtusLab-Open-Source/%40sensinum%2Fastro-strapi-blocks?label=npm&logo=npm">
+    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/VirtusLab-Open-Source/astro-strapi-blocks?label=npm&logo=npm">
   </a>
   <a href="https://www.npmjs.org/package/@sensinum/astro-strapi-blocks">
     <img src="https://img.shields.io/npm/dm/%40sensinum%2Fastro-strapi-blocks.svg" alt="Monthly download on NPM" />
@@ -26,8 +26,8 @@
 
 ## 📋 Requirements
 
-- Astro ^4.5.0
-- TailwindCSS ^3.4.0
+- Astro ^5.5.0
+- TailwindCSS ^4.0.0
 
 ## 📦 Installation
 
