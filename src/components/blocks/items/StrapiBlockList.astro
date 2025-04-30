@@ -1,0 +1,14 @@
+---
+type Props = {
+    class?: string;
+    tag?: "ul" | "ol";
+};
+
+const { class: className = "", tag = "ul" } = Astro.props;
+
+const Tag = tag;
+---
+
+<Tag class={className}>
+    <slot />
+</Tag>

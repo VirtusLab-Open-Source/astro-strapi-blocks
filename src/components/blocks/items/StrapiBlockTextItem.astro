@@ -1,0 +1,16 @@
+---
+import type { StrapiBlockTextItem } from '../../../types/strapi';
+
+type Props = {
+    data: StrapiBlockTextItem;
+    textClass?: Record<string, string>;
+};
+
+const { data, textClass } = Astro.props;
+const { text, italic, bold } = data;
+
+
+---
+{ italic && (<em class={textClass?.em}>{text}</em>) }
+{ bold && (<strong class={textClass?.strong}>{text}</strong>) }
+{ !italic && !bold && (<span>{text}</span>) }

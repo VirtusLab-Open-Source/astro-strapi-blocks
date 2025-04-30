@@ -1,0 +1,24 @@
+---
+import SanitizedNode from "./StrapiBlockNode.astro";
+import type {
+    StrapiBlockListItem,
+    StrapiBlockNode,
+} from "../../../types/strapi";
+import { sanitizeStrapiNodeData } from "../../../lib/strapi";
+
+type Props = {
+    data: Array<StrapiBlockNode>;
+};
+
+const { data } = Astro.props;
+
+const sanitizedData = sanitizeStrapiNodeData(data);
+---
+
+{
+    sanitizedData.length && (
+        <li class="mb-4 text-body-medium">
+            <SanitizedNode data={sanitizedData} />
+        </li>
+    )
+}

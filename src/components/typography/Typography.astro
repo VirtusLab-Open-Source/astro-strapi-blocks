@@ -1,0 +1,116 @@
+---
+
+type Props<FontColors> = {
+    id?: string;
+    class?: string;
+    tag?:
+        | "h1"
+        | "h2"
+        | "h3"
+        | "h4"
+        | "h5"
+        | "h6"
+        | "div"
+        | "p"
+        | "span"
+        | "strong"
+        | "em"
+        | "small"
+        | "a"
+        | "label";
+    size?: "base" | "mediumSubtle" | "medium" | "large" | "xLarge" | "2xLarge";
+    variant?: "header" | "body";
+    color?: FontColors;
+    align?: "start" | "center" | "end";
+    html?: string | string[];
+    getHeaderTextClass?: (size: string, isSubtle?: boolean) => string;
+    getBodyTextClass?: (size: string, isSubtle?: boolean) => string;
+    getTextContentColor?: (color: string) => string;
+} & { [k: string]: any };
+
+const {
+    id,
+    class: classAttr = "",
+    variant = "body",
+    size = "base",
+    color = "primary",
+    align = "start",
+    tag = "p",
+    html,
+    getHeaderTextClass,
+    getBodyTextClass,
+    getTextContentColor,
+    ...attrs
+} = Astro.props;
+
+const classNames = ["relative", getTextContentColor(color)];
+
+const Tag = tag;
+
+switch (variant) {
+    case "header":
+        classNames.push(
+            getHeaderTextClass(size),
+            getHeaderTextClass(size, true),
+        );
+        switch (size) {
+            case "base":
+            case "large":
+                classNames.push("font-bold");
+                break;
+            case "medium":
+            case "mediumSubtle":
+            case "xLarge":
+            case "2xLarge":
+                classNames.push("font-semibold");
+                break;
+            default:
+                classNames.push("font-medium");
+                break;
+        }
+        break;
+    default:
+        classNames.push(
+            "font-medium",
+            getBodyTextClass(size),
+            getBodyTextClass(size, true),
+        );
+        break;
+}
+
+switch (align) {
+    case "center":
+        classNames.push("text-center", "justify-center");
+        break;
+    case "end":
+        classNames.push("text-right", "justify-end");
+        break;
+    default:
+        classNames.push("text-left", "justify-start");
+        break;
+}
+
+classNames.push(...classAttr.split(" "));
+---
+
+{
+    variant === "header" && (
+        <Tag
+            id={id}
+            class={`w-full flex flex-row items-center ${[...classNames].join(" ")}`}
+            {...attrs}
+        >
+            <slot name="icon" />
+            <span>
+                <slot />
+            </span>
+        </Tag>
+    )
+}
+{
+    variant === "body" && (
+        <Tag id={id} class={classNames.join(" ")} {...attrs}>
+            <slot set:html={html} />
+        </Tag>
+    )
+}

@@ -1,0 +1,34 @@
+---
+import SanitizedNode from './items/StrapiBlockNode.astro';
+import { sanitizeStrapiNodeData } from '../../lib/strapi';
+import { getTextContentColor, renderClasses } from '../../lib/utils';
+import type { StrapiBlockNode, StrapiBlockParagraphClass } from '../../types/strapi';
+
+type Props<FontColors extends string> = {
+    class?: string;
+    blockClass?: StrapiBlockParagraphClass;
+    color?: FontColors;
+    data: Array<StrapiBlockNode>;
+}
+
+const { data, class: classes = '', color = "primary", blockClass } = Astro.props;
+
+const paragraphClasses = ["last:mb-0"];
+paragraphClasses.push(...(Array.isArray(classes) ? classes : classes.split(' ')));
+if (!paragraphClasses.find((item: string) => item.match(/.*(text-body-(base|medium|large)).*/g))) {
+    paragraphClasses.push("text-body-medium");
+}
+paragraphClasses.push(getTextContentColor(color));
+
+const sanitizedData = sanitizeStrapiNodeData(data);
+
+const textClass = {
+    strong: blockClass?.strong,
+    em: blockClass?.em,
+    a: blockClass?.a,
+};
+
+---
+{ sanitizedData.length && (<p class={renderClasses(paragraphClasses)}>
+    <SanitizedNode data={sanitizedData} textClass={textClass as Record<string, string>} />
+</p>)}

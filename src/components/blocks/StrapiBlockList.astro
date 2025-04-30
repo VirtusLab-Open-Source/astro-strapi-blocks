@@ -1,0 +1,51 @@
+---
+import ListItem from "./items/StrapiBlockListItem.astro";
+import List from "./items/StrapiBlockList.astro";
+
+import type {
+    StrapiBlockListItem,
+    StrapiBlockListType,
+} from "../../types/strapi";
+import { getTextContentColor, renderClasses } from "../../lib/utils";
+
+type Props<FontColors extends string> = {
+    class?: string;
+    format: StrapiBlockListType;
+    color?: FontColors;
+    data: Array<StrapiBlockListItem>;
+};
+
+const { data, format = "unordered", class: classes = "", color = "primary" } = Astro.props;
+
+const listClasses = classes.split(" ");
+
+const renderData = data.filter(
+    (item: StrapiBlockListItem) => item.children && item.children.length,
+);
+
+if (listClasses.length === 0) {
+    listClasses.push("mb-2");
+}
+
+listClasses.push(getTextContentColor(color))
+---
+
+{
+    format === "unordered" && (
+        <List tag="ul" class={renderClasses([...listClasses, "list-disc", "pl-6"])}>
+            {renderData.map((item: StrapiBlockListItem) => (
+                <ListItem data={item.children} />
+            ))}
+        </List>
+    )
+}
+
+{
+    format === "ordered" && (
+        <List tag="ol" class={renderClasses([...listClasses, "list-decimal"])}>
+            {renderData.map((item: StrapiBlockListItem) => (
+                <ListItem data={item.children} />
+            ))}
+        </List>
+    )
+}

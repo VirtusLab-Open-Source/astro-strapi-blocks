@@ -1,0 +1,79 @@
+---
+import type { StrapiBlockTextItem } from "../../types/strapi";
+import Typography from "../typography/Typography.astro";
+
+type Props = {
+    level: number;
+    data: Array<StrapiBlockTextItem>;
+};
+
+const { data, level = 2 } = Astro.props;
+
+const sanitizedData = data.filter(({ text }: StrapiBlockTextItem) => text);
+---
+
+{
+    sanitizedData.length && (
+        <>
+            {sanitizedData.map(({ text }: StrapiBlockTextItem) => {
+                switch (level) {
+                    case 2:
+                        return (
+                            <Typography
+                                tag="h2"
+                                variant="header"
+                                size="large"
+                                class="mt-20 mb-6 sm:max-md:mt-6"
+                            >
+                                {text}
+                            </Typography>
+                        );
+                    case 3:
+                        return (
+                            <Typography
+                                tag="h3"
+                                variant="header"
+                                size="medium"
+                                class="my-6"
+                            >
+                                {text}
+                            </Typography>
+                        );
+                    case 4:
+                        return (
+                            <Typography tag="h4" variant="header" size="medium">
+                                {text}
+                            </Typography>
+                        );
+                    case 5:
+                        return (
+                            <Typography
+                                tag="h5"
+                                variant="header"
+                                size="mediumSubtle"
+                            >
+                                {text}
+                            </Typography>
+                        );
+                    case 6:
+                        return (
+                            <Typography tag="h6" variant="header" size="base">
+                                {text}
+                            </Typography>
+                        );
+                    default:
+                        return (
+                            <Typography
+                                tag="h2"
+                                class="mt-20 mb-6 sm:max-md:mt-6"
+                                variant="header"
+                                size="xLarge"
+                            >
+                                {text}
+                            </Typography>
+                        );
+                }
+            })}
+        </>
+    )
+}

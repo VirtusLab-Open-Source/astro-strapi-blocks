@@ -1,0 +1,37 @@
+---
+import type { StrapiBlockField, StrapiBlock, StrapiBlockClassExtension } from '../types/strapi';
+import StrapiBlockHeading from './blocks/StrapiBlockHeading.astro';
+import StrapiBlockList from './blocks/StrapiBlockList.astro';
+import StrapiBlockParagraph from './blocks/StrapiBlockParagraph.astro';
+
+type Props<FontColors extends string> = {
+    class?: string;
+    color?: FontColors;
+    blockClass?: StrapiBlockClassExtension;
+    data: StrapiBlockField;
+}
+
+const { data, class: classes, blockClass, color = "primary" } = Astro.props;
+
+---
+
+<div class={classes}>
+    { data.map((block: StrapiBlock) => {
+        switch(block.type) {
+            case "heading":
+                return (<StrapiBlockHeading data={block.children} level={block.level} />);
+            case "paragraph":
+                return (<StrapiBlockParagraph 
+                    class={typeof blockClass?.paragraph === 'string' ? blockClass.paragraph : blockClass?.paragraph?.master} 
+                    blockClass={typeof blockClass?.paragraph === 'string' ? undefined : blockClass?.paragraph} 
+                    data={block.children} 
+                    color={color} 
+                />);
+            case "list":
+                return (<StrapiBlockList class={blockClass?.list} data={block.children} format={block.format} color={color} />);
+            default:
+                return '';
+        }
+    })
+    }
+</div>
