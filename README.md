@@ -34,7 +34,16 @@ import { StrapiBlocks } from 'astro-strapi-blocks';
   data={strapiBlockData}
   class="custom-class"
   color="primary"
-  blockClass="custom-block-class"
+  blockClass={{
+    paragraph: {
+      strong: "custom-strong-class",
+      em: "custom-em-class",
+      a: "custom-link-class",
+      master: "custom-paragraph-class"
+    },
+    heading: "custom-heading-class",
+    list: "custom-list-class"
+  }}
 />
 ```
 
@@ -46,6 +55,70 @@ import { StrapiBlocks } from 'astro-strapi-blocks';
 | `class`    | `string` | Optional. Additional CSS classes to apply to the component wrapper. |
 | `color`    | `FontColors` | Optional. Color theme for the block content. Available values: `primary`, `secondary`, `accent`, etc. As well you can parametrize it. |
 | `blockClass` | `StrapiBlockClassExtension` | Optional. Custom class extension for specific block types. Allows for block-specific styling. |
+
+### Block Class Configuration
+
+The `blockClass` property allows you to customize the styling of different block types and their nested elements. Here's a detailed breakdown of the configuration options:
+
+```typescript
+type BlockClassConfig = {
+  // Paragraph block configuration
+  paragraph?: string | {
+    // Nested elements within paragraph
+    strong?: string;  // Custom class for <strong> elements
+    em?: string;     // Custom class for <em> elements
+    a?: string;      // Custom class for <a> elements
+    master?: string; // Master class for the entire paragraph
+  };
+  
+  // Heading block configuration
+  heading?: string;  // Custom class for heading elements
+  
+  // List block configuration
+  list?: string;     // Custom class for list elements
+}
+```
+
+#### Examples
+
+1. Simple string configuration:
+```astro
+<StrapiBlocks 
+  blockClass={{
+    paragraph: "my-paragraph-class",
+    heading: "my-heading-class",
+    list: "my-list-class"
+  }}
+/>
+```
+
+2. Detailed paragraph configuration:
+```astro
+<StrapiBlocks 
+  blockClass={{
+    paragraph: {
+      strong: "font-bold text-primary",
+      em: "italic text-secondary",
+      a: "text-accent hover:underline",
+      master: "text-base leading-relaxed"
+    }
+  }}
+/>
+```
+
+3. Mixed configuration:
+```astro
+<StrapiBlocks 
+  blockClass={{
+    paragraph: {
+      strong: "font-bold",
+      master: "text-base"
+    },
+    heading: "text-2xl font-bold",
+    list: "list-disc pl-4"
+  }}
+/>
+```
 
 ## 🔧 Development
 
