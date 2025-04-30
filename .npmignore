@@ -1,0 +1,42 @@
+# Version control
+.git
+.gitignore
+
+# Development files
+.github
+.vscode
+.idea
+*.log
+*.tsbuildinfo
+
+# Documentation
+README.md
+LICENSE.md
+CHANGELOG.md
+
+# Tests
+__tests__
+*.test.*
+*.spec.*
+
+# Build output
+dist
+.output
+
+# Environment files
+.env
+.env.*
+.env.local
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Editor files
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw? 

@@ -1,0 +1,104 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.1.1
+jobs:
+  check:
+    docker:
+      - image: cimg/node:20.12.2
+    working_directory: ~/repo
+    resource_class: large
+    steps:
+      - checkout
+      - run:
+          name: set GIT name and email
+          command: |
+            git config --global -l
+            git config --global user.email "$GIT_COMMITTER_EMAIL"
+            git config --global user.name "$GIT_COMMITTER_NAME"
+            git config --global -l
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - astro-strapi-blocks-v1-{{ checksum "yarn.lock" }}
+            - astro-strapi-blocks-
+      - run:
+          name: Echo versions
+          command: |
+            node --version
+            yarn --version
+      - run:
+          name: Configure NPM
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: Install
+          command: |
+            yarn install
+      - run:
+          name: Check
+          command: |
+            yarn check
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: astro-strapi-blocks-v1-{{ checksum "yarn.lock" }}
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+  deploy:
+    docker:
+      - image: cimg/node:20.12.2
+    working_directory: ~/repo
+    resource_class: large
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Configure NPM
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: Publish package
+          command: npm publish --tag latest
+  deployBeta:
+    environment:
+      CODECOV_TOKEN: 08a98f72-f099-432a-a6b5-49c1f134fe90
+    docker:
+      - image: cimg/node:20.12.2
+    working_directory: ~/repo
+    resource_class: large
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Configure NPM
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: Publish package
+          command: npm publish --tag beta
+
+workflows:
+  version: 2
+  check-deploy:
+    jobs:
+      - check:
+          filters:
+            tags:
+              only: /^v.*/
+      - deploy:
+          requires:
+            - check
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
+            branches:
+              ignore: /.*/
+      - deployBeta:
+          requires:
+            - check
+          filters:
+            tags:
+              only: /^v.*-beta\.\d+$/
+            branches:
+              ignore: /.*/
