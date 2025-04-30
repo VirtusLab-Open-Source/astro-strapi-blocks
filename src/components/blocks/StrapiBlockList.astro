@@ -6,16 +6,17 @@ import type {
     StrapiBlockListItem,
     StrapiBlockListType,
 } from "../../types/strapi";
-import { getTextContentColor, renderClasses } from "../../lib/utils";
+import { defaultGetTextContentColor, renderClasses } from "../../lib/utils";
 
 type Props<FontColors extends string> = {
     class?: string;
     format: StrapiBlockListType;
     color?: FontColors;
     data: Array<StrapiBlockListItem>;
+    getTextContentColor?: (color: string) => string;
 };
 
-const { data, format = "unordered", class: classes = "", color = "primary" } = Astro.props;
+const { data, format = "unordered", class: classes = "", color = "primary", getTextContentColor = defaultGetTextContentColor } = Astro.props;
 
 const listClasses = classes.split(" ");
 

@@ -1,5 +1,7 @@
 ---
 
+import { defaultGetHeaderTextClass, defaultGetBodyTextClass, defaultGetTextContentColor } from "../../lib/utils";
+
 type Props<FontColors> = {
     id?: string;
     class?: string;
@@ -37,9 +39,9 @@ const {
     align = "start",
     tag = "p",
     html,
-    getHeaderTextClass,
-    getBodyTextClass,
-    getTextContentColor,
+    getHeaderTextClass = defaultGetHeaderTextClass,
+    getBodyTextClass = defaultGetBodyTextClass,
+    getTextContentColor = defaultGetTextContentColor,
     ...attrs
 } = Astro.props;
 
