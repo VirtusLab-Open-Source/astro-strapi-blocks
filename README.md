@@ -1,6 +1,18 @@
-# Astro Strapi Blocks
+<div align="center">
+  <h1>Astro Strapi Blocks</h1>
+  <p>Astro Components package for Strapi 5 Blocks Field integration</p>
+  <a href="https://www.npmjs.org/package/@sensinum/astro-strapi-blocks">
+    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/VirtusLab-Open-Source/%40sensinum%2Fastro-strapi-blocks?label=npm&logo=npm">
+  </a>
+  <a href="https://www.npmjs.org/package/@sensinum/astro-strapi-blocks">
+    <img src="https://img.shields.io/npm/dm/%40sensinum%2Fastro-strapi-blocks.svg" alt="Monthly download on NPM" />
+  </a>
+  <a href="https://circleci.com/gh/VirtusLab-Open-Source/astro-strapi-blocks">
+    <img src="https://circleci.com/gh/VirtusLab-Open-Source/astro-strapi-blocks.svg?style=shield" alt="CircleCI" />
+  </a>
+</div>
 
-Astro components package for Strapi integration.
+---
 
 ## Table of Contents
 
@@ -20,21 +32,34 @@ Astro components package for Strapi integration.
 ## 📦 Installation
 
 ```bash
-yarn add astro-strapi-blocks
+yarn add @sensinum/astro-strapi-blocks
+```
+
+```bash
+npm install @sensinum/astro-strapi-blocks
 ```
 
 ## 🚀 Usage
 
 ```astro
 ---
-import { StrapiBlocks } from 'astro-strapi-blocks';
+import StrapiBlocks from '@sensinum/astro-strapi-blocks';
 ---
 
 <StrapiBlocks 
   data={strapiBlockData}
   class="custom-class"
   color="primary"
-  blockClass="custom-block-class"
+  blockClass={{
+    paragraph: {
+      strong: "custom-strong-class",
+      em: "custom-em-class",
+      a: "custom-link-class",
+      master: "custom-paragraph-class"
+    },
+    heading: "custom-heading-class",
+    list: "custom-list-class"
+  }}
 />
 ```
 
@@ -46,6 +71,70 @@ import { StrapiBlocks } from 'astro-strapi-blocks';
 | `class`    | `string` | Optional. Additional CSS classes to apply to the component wrapper. |
 | `color`    | `FontColors` | Optional. Color theme for the block content. Available values: `primary`, `secondary`, `accent`, etc. As well you can parametrize it. |
 | `blockClass` | `StrapiBlockClassExtension` | Optional. Custom class extension for specific block types. Allows for block-specific styling. |
+
+### Block Class Configuration
+
+The `blockClass` property allows you to customize the styling of different block types and their nested elements. Here's a detailed breakdown of the configuration options:
+
+```typescript
+type BlockClassConfig = {
+  // Paragraph block configuration
+  paragraph?: string | {
+    // Nested elements within paragraph
+    strong?: string;  // Custom class for <strong> elements
+    em?: string;     // Custom class for <em> elements
+    a?: string;      // Custom class for <a> elements
+    master?: string; // Master class for the entire paragraph
+  };
+  
+  // Heading block configuration
+  heading?: string;  // Custom class for heading elements
+  
+  // List block configuration
+  list?: string;     // Custom class for list elements
+}
+```
+
+#### Examples
+
+1. Simple string configuration:
+```astro
+<StrapiBlocks 
+  blockClass={{
+    paragraph: "my-paragraph-class",
+    heading: "my-heading-class",
+    list: "my-list-class"
+  }}
+/>
+```
+
+2. Detailed paragraph configuration:
+```astro
+<StrapiBlocks 
+  blockClass={{
+    paragraph: {
+      strong: "font-bold text-primary",
+      em: "italic text-secondary",
+      a: "text-accent hover:underline",
+      master: "text-base leading-relaxed"
+    }
+  }}
+/>
+```
+
+3. Mixed configuration:
+```astro
+<StrapiBlocks 
+  blockClass={{
+    paragraph: {
+      strong: "font-bold",
+      master: "text-base"
+    },
+    heading: "text-2xl font-bold",
+    list: "list-disc pl-4"
+  }}
+/>
+```
 
 ## 🔧 Development
 

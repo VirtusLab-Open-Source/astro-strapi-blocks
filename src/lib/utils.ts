@@ -11,7 +11,7 @@ export type TextColorClasses<T extends string = any> = {
     [key in T]?: string;
 };
 
-export const getBodyTextClass = (size: string, isMobile: boolean = false): string => {
+export const defaultGetBodyTextClass = (size: string, isMobile: boolean = false): string => {
     const sizeUnified = size.toLowerCase() as TextSizes;
     const classes: TextClasses = {
         'base': 'text-body-base',
@@ -30,7 +30,7 @@ export const getBodyTextClass = (size: string, isMobile: boolean = false): strin
     return get(classes, sizeUnified);
 };
 
-export const getHeaderTextClass = (size: string, isMobile: boolean = false): string => {
+export const defaultGetHeaderTextClass = (size: string, isMobile: boolean = false): string => {
     const sizeUnified = size.toLowerCase() as TextSizes;
     const classes: TextClasses = {
         'base': 'text-base',
@@ -52,7 +52,7 @@ export const getHeaderTextClass = (size: string, isMobile: boolean = false): str
     return get(classes, sizeUnified, '');
 };
 
-export const getTextContentColor = (color: string): string => {
+export const defaultGetTextContentColor = (color: string): string => {
     const classes: TextColorClasses = {
         'primary': 'text-primary',
         'secondary': 'text-secondary',

@@ -15,7 +15,7 @@ const { data, url, class: classes = "" } = Astro.props;
 {
     url && (
         <a
-            class={classes.join(" ")}
+            class={classes}
             href={url}
         >
             {data.map((item: StrapiBlockTextItem) => (

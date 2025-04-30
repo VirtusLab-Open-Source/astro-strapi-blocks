@@ -1,13 +1,15 @@
 ---
 import type { StrapiBlockTextItem } from "../../types/strapi";
 import Typography from "../typography/Typography.astro";
-
+import { defaultGetHeaderTextClass, defaultGetTextContentColor } from "../../lib/utils";
 type Props = {
     level: number;
     data: Array<StrapiBlockTextItem>;
+    getHeaderTextClass?: (size: string, isSubtle?: boolean) => string;
+    getTextContentColor?: (color: string) => string;
 };
 
-const { data, level = 2 } = Astro.props;
+const { data, level = 2, getHeaderTextClass = defaultGetHeaderTextClass, getTextContentColor = defaultGetTextContentColor } = Astro.props;
 
 const sanitizedData = data.filter(({ text }: StrapiBlockTextItem) => text);
 ---
@@ -24,6 +26,8 @@ const sanitizedData = data.filter(({ text }: StrapiBlockTextItem) => text);
                                 variant="header"
                                 size="large"
                                 class="mt-20 mb-6 sm:max-md:mt-6"
+                                getHeaderTextClass={getHeaderTextClass}
+                                getTextContentColor={getTextContentColor}
                             >
                                 {text}
                             </Typography>
@@ -35,29 +39,33 @@ const sanitizedData = data.filter(({ text }: StrapiBlockTextItem) => text);
                                 variant="header"
                                 size="medium"
                                 class="my-6"
+                                getHeaderTextClass={getHeaderTextClass}
+                                getTextContentColor={getTextContentColor}
                             >
                                 {text}
                             </Typography>
                         );
                     case 4:
                         return (
-                            <Typography tag="h4" variant="header" size="medium">
+                            <Typography
+                                tag="h4"
+                                variant="header"
+                                size="medium"
+                                getHeaderTextClass={getHeaderTextClass}
+                                getTextContentColor={getTextContentColor}
+                            >
                                 {text}
                             </Typography>
                         );
                     case 5:
                         return (
                             <Typography
-                                tag="h5"
+                                tag="h6"
                                 variant="header"
-                                size="mediumSubtle"
+                                size="base"
+                                getHeaderTextClass={getHeaderTextClass}
+                                getTextContentColor={getTextContentColor}
                             >
-                                {text}
-                            </Typography>
-                        );
-                    case 6:
-                        return (
-                            <Typography tag="h6" variant="header" size="base">
                                 {text}
                             </Typography>
                         );
@@ -68,6 +76,8 @@ const sanitizedData = data.filter(({ text }: StrapiBlockTextItem) => text);
                                 class="mt-20 mb-6 sm:max-md:mt-6"
                                 variant="header"
                                 size="xLarge"
+                                getHeaderTextClass={getHeaderTextClass}
+                                getTextContentColor={getTextContentColor}
                             >
                                 {text}
                             </Typography>

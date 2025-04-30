@@ -3,15 +3,18 @@ import type { StrapiBlockField, StrapiBlock, StrapiBlockClassExtension } from '.
 import StrapiBlockHeading from './blocks/StrapiBlockHeading.astro';
 import StrapiBlockList from './blocks/StrapiBlockList.astro';
 import StrapiBlockParagraph from './blocks/StrapiBlockParagraph.astro';
-
+import { defaultGetTextContentColor, defaultGetHeaderTextClass, defaultGetBodyTextClass } from '../lib/utils';
 type Props<FontColors extends string> = {
     class?: string;
     color?: FontColors;
     blockClass?: StrapiBlockClassExtension;
     data: StrapiBlockField;
+    getTextContentColor?: (color: string) => string;
+    getHeaderTextClass?: (size: string, isSubtle?: boolean) => string;
+    getBodyTextClass?: (size: string, isSubtle?: boolean) => string;
 }
 
-const { data, class: classes, blockClass, color = "primary" } = Astro.props;
+const { data, class: classes, blockClass, color = "primary", getTextContentColor = defaultGetTextContentColor, getHeaderTextClass = defaultGetHeaderTextClass, getBodyTextClass = defaultGetBodyTextClass } = Astro.props;
 
 ---
 
@@ -26,6 +29,7 @@ const { data, class: classes, blockClass, color = "primary" } = Astro.props;
                     blockClass={typeof blockClass?.paragraph === 'string' ? undefined : blockClass?.paragraph} 
                     data={block.children} 
                     color={color} 
+                    getTextContentColor={getTextContentColor}
                 />);
             case "list":
                 return (<StrapiBlockList class={blockClass?.list} data={block.children} format={block.format} color={color} />);
