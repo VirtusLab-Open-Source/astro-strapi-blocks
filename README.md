@@ -1,6 +1,18 @@
-# Astro Strapi Blocks
+<div align="center">
+  <h1>Astro Strapi Blocks</h1>
+  <p>Astro Components package for Strapi 5 Blocks Field integration</p>
+  <a href="https://www.npmjs.org/package/@sensinum/astro-strapi-blocks">
+    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/VirtusLab-Open-Source/%40sensinum%2Fastro-strapi-blocks?label=npm&logo=npm">
+  </a>
+  <a href="https://www.npmjs.org/package/@sensinum/astro-strapi-blocks">
+    <img src="https://img.shields.io/npm/dm/%40sensinum%2Fastro-strapi-blocks.svg" alt="Monthly download on NPM" />
+  </a>
+  <a href="https://circleci.com/gh/VirtusLab-Open-Source/astro-strapi-blocks">
+    <img src="https://circleci.com/gh/VirtusLab-Open-Source/astro-strapi-blocks.svg?style=shield" alt="CircleCI" />
+  </a>
+</div>
 
-Astro components package for Strapi integration.
+---
 
 ## Table of Contents
 
@@ -20,14 +32,18 @@ Astro components package for Strapi integration.
 ## 📦 Installation
 
 ```bash
-yarn add astro-strapi-blocks
+yarn add @sensinum/astro-strapi-blocks
+```
+
+```bash
+npm install @sensinum/astro-strapi-blocks
 ```
 
 ## 🚀 Usage
 
 ```astro
 ---
-import { StrapiBlocks } from 'astro-strapi-blocks';
+import StrapiBlocks from '@sensinum/astro-strapi-blocks';
 ---
 
 <StrapiBlocks 
