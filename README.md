@@ -83,4 +83,4 @@ Please make sure to:
 
 Copyright © [Sensinum](https://sensinum.com) & [VirtusLab](https://virtuslab.com)
 
-This project is licensed under the MIT License. 
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details. 
