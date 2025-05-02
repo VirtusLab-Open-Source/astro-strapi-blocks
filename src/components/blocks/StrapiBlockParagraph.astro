@@ -14,7 +14,7 @@ type Props<FontColors extends string> = {
 
 const { data, class: classes = '', color = "primary", blockClass, getTextContentColor = defaultGetTextContentColor } = Astro.props;
 
-const paragraphClasses = ["last:mb-0"];
+const paragraphClasses = [];
 paragraphClasses.push(...(Array.isArray(classes) ? classes : classes.split(' ')));
 if (!paragraphClasses.find((item: string) => item.match(/.*(text-body-(base|medium|large)).*/g))) {
     paragraphClasses.push("text-body-medium");

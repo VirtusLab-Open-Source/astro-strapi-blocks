@@ -1,6 +1,6 @@
 {
   "name": "@sensinum/astro-strapi-blocks",
-  "version": "1.0.1",
+  "version": "1.0.2-beta.1",
   "description": "Astro components for Strapi Block Field",
   "type": "module",
   "main": "./src/components/StrapiBlocks.astro",
