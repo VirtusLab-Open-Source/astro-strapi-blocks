@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import { sanitizeStrapiNodeData } from '../../lib/strapi';
+import { renderClasses } from '../../lib/utils';
+import type { StrapiBlockNode, StrapiMedia, StrapiBlockTextItem, StrapiBlockImage } from '../../types/strapi';
+
+type Props = {
+    children?: Array<StrapiBlockNode>;
+    format?: StrapiBlockImage['format'];
+    data: StrapiMedia;
+    class?: string;
+}
+
+const { children, data, format = 'original', class: classes = '' } = Astro.props;
+
+const defaultClasses = [
+    'mb-4',
+    'w-full',
+    'h-auto',
+    'flex',
+    'items-center',
+    'justify-center',
+    'last:mb-0',
+];
+const blockClasses = [...(Array.isArray(classes) ? classes : classes.split(' '))];
+const codeBlockClasses = [...defaultClasses, ...blockClasses];
+
+const sanitizedData = children ? sanitizeStrapiNodeData(children) : undefined;
+const imageFormat = format !== 'original' ? data.formats[format as keyof StrapiMedia['formats']] : data;
+const imageSource = imageFormat || data;
+
+---
+{ imageSource && (<div class={renderClasses(codeBlockClasses)}>
+    <Image src={imageSource.url} alt={imageSource.alternativeText} width={imageSource.width} height={imageSource.height} />
+    { sanitizedData && (<div class="text-sm mb-2 text-gray-900 text-center"><em>{sanitizedData.map((item) => (item as StrapiBlockTextItem).text).join('\n')}</em></div>) }
+</div>)}

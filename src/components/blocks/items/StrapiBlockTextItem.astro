@@ -7,10 +7,31 @@ type Props = {
 };
 
 const { data, textClass } = Astro.props;
-const { text, italic, bold } = data;
+const { text, italic, bold, underline, strikethrough } = data;
 
+const tags = [];
+
+if (italic) {
+    tags.push('em');
+}
+if (bold) {
+    tags.push('strong');
+}
+if (underline) {
+    tags.push('u');
+}
+if (strikethrough) {
+    tags.push('s');
+}
+
+const renderTagsStack = (text: string, tags: Array<string>) => {
+    if (tags.length === 0) {
+        return text;
+    }
+    return tags.reduce((acc, tag) => {
+        return `<${tag} class=${textClass?.[tag]}>${acc}</${tag}>`;
+    }, text);
+};
 
 ---
-{ italic && (<em class={textClass?.em}>{text}</em>) }
-{ bold && (<strong class={textClass?.strong}>{text}</strong>) }
-{ !italic && !bold && (<span>{text}</span>) }
+<span class={textClass?.span} set:html={renderTagsStack(text, tags)} />

@@ -25,6 +25,8 @@ export type StrapiBlockTextItem = {
     type: 'text';
     bold?: boolean;
     italic?: boolean;
+    underline?: boolean;
+    strikethrough?: boolean;
 };
 
 export type StrapiBlockLinkItem = {
@@ -45,6 +47,12 @@ export type StrapiBlockHeading = {
     level: number;
 };
 
+export type StrapiBlockCode = {
+    type: 'code';
+    language: string;
+    children: Array<StrapiBlockNode>;
+};
+
 export type StrapiBlockListType = 'ordered' | 'unordered'
 
 export type StrapiBlockList = {
@@ -57,14 +65,28 @@ export type StrapiBlockParagraph = {
     type: 'paragraph';
 };
 
-export type StrapiBlockVariations = StrapiBlockParagraph | StrapiBlockHeading | StrapiBlockList;
+export type StrapiBlockQuote = {
+    type: 'quote';
+};
 
-export type StrapiBlockType = 'paragraph' | 'heading' | 'list';
+export type StrapiBlockImage = {
+    type: 'image';
+    image: StrapiMedia;
+    format?: 'original' | keyof StrapiMedia['formats'];
+    children?: Array<StrapiBlockNode>;
+};
+
+export type StrapiBlockVariations = StrapiBlockParagraph | StrapiBlockHeading | StrapiBlockList | StrapiBlockCode | StrapiBlockQuote | StrapiBlockImage;
+
+export type StrapiBlockType = 'paragraph' | 'heading' | 'list' | 'quote' | 'code' | 'image';
 
 export type StrapiBlockParagraphClass = {
     strong?: string;
     em?: string;
     a?: string;
+    s?: string;
+    u?: string;
+    span?: string;
     master?: string;
 };
 
@@ -72,6 +94,9 @@ export type StrapiBlockClassExtension = {
     paragraph?: StrapiBlockParagraphClass | string;
     heading?: string;
     list?: string;
+    quote?: string;
+    code?: string;
+    image?: string;
 };
 
 export type StrapiBlock<T = StrapiBlockVariations> = {

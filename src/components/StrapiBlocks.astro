@@ -3,7 +3,10 @@ import type { StrapiBlockField, StrapiBlock, StrapiBlockClassExtension } from '.
 import StrapiBlockHeading from './blocks/StrapiBlockHeading.astro';
 import StrapiBlockList from './blocks/StrapiBlockList.astro';
 import StrapiBlockParagraph from './blocks/StrapiBlockParagraph.astro';
+import StrapiBlockCode from './blocks/StrapiBlockCode.astro';
+import StrapiBlockImage from './blocks/StrapiBlockImage.astro';
 import { defaultGetTextContentColor, defaultGetHeaderTextClass, defaultGetBodyTextClass } from '../lib/utils';
+
 type Props<FontColors extends string> = {
     class?: string;
     color?: FontColors;
@@ -24,15 +27,32 @@ const { data, class: classes, blockClass, color = "primary", getTextContentColor
             case "heading":
                 return (<StrapiBlockHeading data={block.children} level={block.level} />);
             case "paragraph":
+                const paragraphClass = typeof blockClass?.paragraph === 'string' ? blockClass.paragraph : blockClass?.paragraph?.master;
+                const paragraphClassList = ['mb-2', 'last:mb-0'];
+                paragraphClassList.push(...(paragraphClass || '').split(' '));
                 return (<StrapiBlockParagraph 
-                    class={typeof blockClass?.paragraph === 'string' ? blockClass.paragraph : blockClass?.paragraph?.master} 
+                    class={paragraphClassList.join(' ')} 
                     blockClass={typeof blockClass?.paragraph === 'string' ? undefined : blockClass?.paragraph} 
                     data={block.children} 
                     color={color} 
                     getTextContentColor={getTextContentColor}
                 />);
+            case "quote":
+                const quoteClass = typeof blockClass?.quote === 'string' ? blockClass.quote : blockClass?.quote?.master;
+                const quoteClassList = ['border-l-4', 'border-gray-300', 'pl-4', 'py-4', 'mb-2', 'last:mb-0'];
+                quoteClassList.push(...(quoteClass || '').split(' '));
+                return (<StrapiBlockParagraph 
+                    class={quoteClassList.join(' ')} 
+                    blockClass={typeof blockClass?.quote === 'string' ? undefined : blockClass?.quote} 
+                    data={block.children} 
+                    color={color} 
+                />);
             case "list":
                 return (<StrapiBlockList class={blockClass?.list} data={block.children} format={block.format} color={color} />);
+            case "code":
+                return (<StrapiBlockCode class={blockClass?.code} data={block.children} language={block.language} />);
+            case "image":
+                return (<StrapiBlockImage class={blockClass?.image} data={block.image} format={block.format} children={block.children} />);
             default:
                 return '';
         }
