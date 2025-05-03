@@ -4,6 +4,7 @@ import StrapiBlockHeading from './blocks/StrapiBlockHeading.astro';
 import StrapiBlockList from './blocks/StrapiBlockList.astro';
 import StrapiBlockParagraph from './blocks/StrapiBlockParagraph.astro';
 import StrapiBlockCode from './blocks/StrapiBlockCode.astro';
+import StrapiBlockImage from './blocks/StrapiBlockImage.astro';
 import { defaultGetTextContentColor, defaultGetHeaderTextClass, defaultGetBodyTextClass } from '../lib/utils';
 
 type Props<FontColors extends string> = {
@@ -50,6 +51,8 @@ const { data, class: classes, blockClass, color = "primary", getTextContentColor
                 return (<StrapiBlockList class={blockClass?.list} data={block.children} format={block.format} color={color} />);
             case "code":
                 return (<StrapiBlockCode class={blockClass?.code} data={block.children} language={block.language} />);
+            case "image":
+                return (<StrapiBlockImage class={blockClass?.image} data={block.image} format={block.format} children={block.children} />);
             default:
                 return '';
         }

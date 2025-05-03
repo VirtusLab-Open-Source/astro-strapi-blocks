@@ -69,9 +69,16 @@ export type StrapiBlockQuote = {
     type: 'quote';
 };
 
-export type StrapiBlockVariations = StrapiBlockParagraph | StrapiBlockHeading | StrapiBlockList | StrapiBlockCode | StrapiBlockQuote;
+export type StrapiBlockImage = {
+    type: 'image';
+    image: StrapiMedia;
+    format?: 'original' | keyof StrapiMedia['formats'];
+    children?: Array<StrapiBlockNode>;
+};
 
-export type StrapiBlockType = 'paragraph' | 'heading' | 'list' | 'quote' | 'code';
+export type StrapiBlockVariations = StrapiBlockParagraph | StrapiBlockHeading | StrapiBlockList | StrapiBlockCode | StrapiBlockQuote | StrapiBlockImage;
+
+export type StrapiBlockType = 'paragraph' | 'heading' | 'list' | 'quote' | 'code' | 'image';
 
 export type StrapiBlockParagraphClass = {
     strong?: string;
@@ -89,6 +96,7 @@ export type StrapiBlockClassExtension = {
     list?: string;
     quote?: string;
     code?: string;
+    image?: string;
 };
 
 export type StrapiBlock<T = StrapiBlockVariations> = {

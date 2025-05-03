@@ -18,8 +18,9 @@
 
 - 📋 [Requirements](#requirements)
 - 📦 [Installation](#installation)
-- 🚀 [Usage](#usage)
-- ⚙️ [Properties](#properties)
+- 🚀 [Features](#features)
+- 🖥️ [Usage](#usage)
+- ⚙️ [Configuration](#configuration)
 - 🔧 [Development](#development)
 - 🤝 [Contributing](#contributing)
 - 📄 [License](#license)
@@ -39,7 +40,19 @@ yarn add @sensinum/astro-strapi-blocks
 npm install @sensinum/astro-strapi-blocks
 ```
 
-## 🚀 Usage
+## 🚀 Features
+
+- ✨ Comprehensive support for Strapi 5 Blocks Field with built-in types:
+  - 📝 Paragraph with formatting (italic, bold, underline, strikethrough, link)
+  - 📑 Quote with formatting (italic, bold, underline, strikethrough, link)
+  - 📋 List (ordered and unordered)
+  - 💻 Code blocks
+  - 🖼️ Image blocks
+  - 📌 Headers (H1 - H6)
+- 🎯 Flexible block class configuration for custom styling
+- 🛠️ TypeScript support with full type definitions
+
+## 🖥️ Usage
 
 ```astro
 ---
@@ -58,12 +71,17 @@ import StrapiBlocks from '@sensinum/astro-strapi-blocks';
       master: "custom-paragraph-class"
     },
     heading: "custom-heading-class",
-    list: "custom-list-class"
+    list: "custom-list-class",
+    quote: "custom-quote-class",
+    code: "custom-code-class",
+    image: "custom-image-class"
   }}
 />
 ```
 
-## ⚙️ Properties
+## ⚙️ Configuration
+
+### Properties
 
 | Property    | Type     | Description |
 |------------|----------|-------------|
@@ -84,6 +102,8 @@ type BlockClassConfig = {
     strong?: string;  // Custom class for <strong> elements
     em?: string;     // Custom class for <em> elements
     a?: string;      // Custom class for <a> elements
+    s?: string;
+    u?: string;
     master?: string; // Master class for the entire paragraph
   };
   
@@ -92,6 +112,15 @@ type BlockClassConfig = {
   
   // List block configuration
   list?: string;     // Custom class for list elements
+  
+  // Quote block configuration
+  quote?: string;     // Custom class for quote elements
+
+  // Code block configuration
+  code?: string;     // Custom class for code elements
+
+  // Image block configuration
+  image?: string;     // Custom class for image elements
 }
 ```
 
