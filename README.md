@@ -1,3 +1,6 @@
+<div align="center" style="max-width: 10rem; margin: 0 auto">
+  <img style="width: 150px; height: auto;" src="https://www.sensinum.com/img/open-source/strapi-astro-blocks/logo.png" alt="Logo - Strapi Astro Blocks" />
+</div>
 <div align="center">
   <h1>Astro Strapi Blocks</h1>
   <p>Astro Components package for Strapi 5 Blocks Field integration</p>
@@ -43,12 +46,12 @@ npm install @sensinum/astro-strapi-blocks
 ## 🚀 Features
 
 - ✨ Comprehensive support for Strapi 5 Blocks Field with built-in types:
+  - 📌 Headers (H1 - H6)
   - 📝 Paragraph with formatting (italic, bold, underline, strikethrough, link)
   - 📑 Quote with formatting (italic, bold, underline, strikethrough, link)
   - 📋 List (ordered and unordered)
   - 💻 Code blocks
   - 🖼️ Image blocks
-  - 📌 Headers (H1 - H6)
 - 🎯 Flexible block class configuration for custom styling
 - 🛠️ TypeScript support with full type definitions
 
