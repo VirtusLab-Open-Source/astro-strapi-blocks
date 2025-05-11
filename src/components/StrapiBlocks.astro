@@ -1,23 +1,23 @@
 ---
-import type { StrapiBlockField, StrapiBlock, StrapiBlockClassExtension } from '../types/strapi';
 import StrapiBlockHeading from './blocks/StrapiBlockHeading.astro';
 import StrapiBlockList from './blocks/StrapiBlockList.astro';
 import StrapiBlockParagraph from './blocks/StrapiBlockParagraph.astro';
 import StrapiBlockCode from './blocks/StrapiBlockCode.astro';
 import StrapiBlockImage from './blocks/StrapiBlockImage.astro';
-import { defaultGetTextContentColor, defaultGetHeaderTextClass, defaultGetBodyTextClass } from '../lib/utils';
 
-type Props<FontColors extends string> = {
+import { StrapiBlockThemeDefault, buildThemeObject, renderPropertyClasses } from '../lib/theme';
+import type { StrapiBlockField, StrapiBlock, StrapiBlockTheme, StrapiBlockUserTheme } from '../types';
+
+type Props = {
     class?: string;
-    color?: FontColors;
-    blockClass?: StrapiBlockClassExtension;
+    theme?: StrapiBlockUserTheme;
     data: StrapiBlockField;
-    getTextContentColor?: (color: string) => string;
-    getHeaderTextClass?: (size: string, isSubtle?: boolean) => string;
-    getBodyTextClass?: (size: string, isSubtle?: boolean) => string;
 }
 
-const { data, class: classes, blockClass, color = "primary", getTextContentColor = defaultGetTextContentColor, getHeaderTextClass = defaultGetHeaderTextClass, getBodyTextClass = defaultGetBodyTextClass } = Astro.props;
+const { data, class: classes, theme } = Astro.props;
+
+const themeObject: StrapiBlockTheme = theme ? buildThemeObject(theme, StrapiBlockThemeDefault) : StrapiBlockThemeDefault;
+
 
 ---
 
@@ -25,34 +25,23 @@ const { data, class: classes, blockClass, color = "primary", getTextContentColor
     { data.map((block: StrapiBlock) => {
         switch(block.type) {
             case "heading":
-                return (<StrapiBlockHeading data={block.children} level={block.level} />);
+                return (<StrapiBlockHeading class={renderPropertyClasses(themeObject, 'heading')} data={block.children} level={block.level} />);
             case "paragraph":
-                const paragraphClass = typeof blockClass?.paragraph === 'string' ? blockClass.paragraph : blockClass?.paragraph?.master;
-                const paragraphClassList = ['mb-2', 'last:mb-0'];
-                paragraphClassList.push(...(paragraphClass || '').split(' '));
                 return (<StrapiBlockParagraph 
-                    class={paragraphClassList.join(' ')} 
-                    blockClass={typeof blockClass?.paragraph === 'string' ? undefined : blockClass?.paragraph} 
+                    class={renderPropertyClasses(themeObject, 'paragraph')} 
                     data={block.children} 
-                    color={color} 
-                    getTextContentColor={getTextContentColor}
                 />);
             case "quote":
-                const quoteClass = typeof blockClass?.quote === 'string' ? blockClass.quote : blockClass?.quote?.master;
-                const quoteClassList = ['border-l-4', 'border-gray-300', 'pl-4', 'py-4', 'mb-2', 'last:mb-0'];
-                quoteClassList.push(...(quoteClass || '').split(' '));
                 return (<StrapiBlockParagraph 
-                    class={quoteClassList.join(' ')} 
-                    blockClass={typeof blockClass?.quote === 'string' ? undefined : blockClass?.quote} 
+                    class={renderPropertyClasses(themeObject, 'quote')} 
                     data={block.children} 
-                    color={color} 
                 />);
             case "list":
-                return (<StrapiBlockList class={blockClass?.list} data={block.children} format={block.format} color={color} />);
+                return (<StrapiBlockList class={renderPropertyClasses(themeObject, 'list')} data={block.children} format={block.format} />);
             case "code":
-                return (<StrapiBlockCode class={blockClass?.code} data={block.children} language={block.language} />);
+                return (<StrapiBlockCode class={renderPropertyClasses(themeObject, 'code')} data={block.children} language={block.language} />);
             case "image":
-                return (<StrapiBlockImage class={blockClass?.image} data={block.image} format={block.format} children={block.children} />);
+                return (<StrapiBlockImage class={renderPropertyClasses(themeObject, 'image')} data={block.image} format={block.format} children={block.children} />);
             default:
                 return '';
         }

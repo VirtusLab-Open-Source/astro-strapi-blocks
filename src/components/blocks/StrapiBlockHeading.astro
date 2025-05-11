@@ -4,14 +4,15 @@ import Typography from "../typography/Typography.astro";
 import { defaultGetHeaderTextClass, defaultGetTextContentColor } from "../../lib/utils";
 type Props = {
     level: number;
+    class?: string;
     data: Array<StrapiBlockTextItem>;
-    getHeaderTextClass?: (size: string, isSubtle?: boolean) => string;
-    getTextContentColor?: (color: string) => string;
 };
 
-const { data, level = 2, getHeaderTextClass = defaultGetHeaderTextClass, getTextContentColor = defaultGetTextContentColor } = Astro.props;
+const { data, level = 2, class: classes = '' } = Astro.props;
 
 const sanitizedData = data.filter(({ text }: StrapiBlockTextItem) => text);
+const headingClasses = classes ? classes.split(' ') : [];
+const headingTag = `h${level}`;
 ---
 
 {
