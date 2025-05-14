@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Test
           command: |
-            yarn test
+            yarn test:ci
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:

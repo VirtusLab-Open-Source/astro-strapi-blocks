@@ -37,6 +37,7 @@
     "dev": "tsc --watch",
     "check": "tsc --noEmit",
     "test": "jest",
+    "test:ci": "CI=true jest --ci --runInBand --verbose --coverage",
     "test:watch": "jest --watch"
   },
   "devDependencies": {
