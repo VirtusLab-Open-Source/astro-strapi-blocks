@@ -25,23 +25,46 @@ const themeObject: StrapiBlockTheme = theme ? buildThemeObject(theme, StrapiBloc
     { data.map((block: StrapiBlock) => {
         switch(block.type) {
             case "heading":
-                return (<StrapiBlockHeading class={renderPropertyClasses(themeObject, 'heading')} data={block.children} level={block.level} />);
+                return (<StrapiBlockHeading 
+                    class={renderPropertyClasses(themeObject, ['heading', 'block'])} 
+                    data={block.children} 
+                    level={block.level}
+                    theme={themeObject}
+                />);
             case "paragraph":
                 return (<StrapiBlockParagraph 
-                    class={renderPropertyClasses(themeObject, 'paragraph')} 
+                    class={renderPropertyClasses(themeObject, ['paragraph', 'block'])} 
                     data={block.children} 
+                    theme={themeObject}
                 />);
             case "quote":
                 return (<StrapiBlockParagraph 
-                    class={renderPropertyClasses(themeObject, 'quote')} 
+                    class={renderPropertyClasses(themeObject, ['quote', 'block'])} 
                     data={block.children} 
+                    theme={themeObject}
                 />);
             case "list":
-                return (<StrapiBlockList class={renderPropertyClasses(themeObject, 'list')} data={block.children} format={block.format} />);
+                return (<StrapiBlockList 
+                    class={renderPropertyClasses(themeObject, ['list', 'block'])} 
+                    data={block.children} 
+                    format={block.format} 
+                    theme={themeObject}
+                />);
             case "code":
-                return (<StrapiBlockCode class={renderPropertyClasses(themeObject, 'code')} data={block.children} language={block.language} />);
+                return (<StrapiBlockCode 
+                    class={renderPropertyClasses(themeObject, ['code', 'block'])} 
+                    data={block.children} 
+                    language={block.language} 
+                    theme={themeObject}
+                />);
             case "image":
-                return (<StrapiBlockImage class={renderPropertyClasses(themeObject, 'image')} data={block.image} format={block.format} children={block.children} />);
+                return (<StrapiBlockImage 
+                    class={renderPropertyClasses(themeObject, ['image', 'block'])} 
+                    data={block.image} 
+                    format={block.format} 
+                    children={block.children} 
+                    theme={themeObject}
+                />);
             default:
                 return '';
         }

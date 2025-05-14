@@ -3,22 +3,25 @@ import SanitizedNode from "./StrapiBlockNode.astro";
 import type {
     StrapiBlockListItem,
     StrapiBlockNode,
-} from "../../../types/strapi";
-import { sanitizeStrapiNodeData } from "../../../lib/strapi";
+    StrapiBlockTheme
+} from "../../../types";
+import { sanitizeStrapiNodeData, StrapiBlockThemeDefault } from "../../../lib";
 
 type Props = {
+    class?: string;
     data: Array<StrapiBlockNode>;
+    theme: StrapiBlockTheme;
 };
 
-const { data } = Astro.props;
+const { data, class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
 
 const sanitizedData = sanitizeStrapiNodeData(data);
 ---
 
 {
     sanitizedData.length && (
-        <li class="mb-4 text-body-medium">
-            <SanitizedNode data={sanitizedData} />
+        <li class={classes}>
+            <SanitizedNode data={sanitizedData} theme={theme.paragraph} />
         </li>
     )
 }

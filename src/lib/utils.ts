@@ -1,7 +1,5 @@
 const get = (obj: any, key: string, defaultValue: any = undefined) => obj?.[key] ?? defaultValue;
 
-export const renderClasses = (classes: string | Array<string>) => Array.isArray(classes) ? classes.join(' ') : classes;
-
 export type TextSizes<T extends string = 'base' | 'medium' | 'large' | 'xlarge' | '2xlarge'> = T;
 export type TextClasses<T extends string = TextSizes> = {
     [key in T]?: string;

@@ -1,35 +1,21 @@
 ---
 import SanitizedNode from './items/StrapiBlockNode.astro';
-import { sanitizeStrapiNodeData } from '../../lib/strapi';
-import { defaultGetTextContentColor, renderClasses } from '../../lib/utils';
-import type { StrapiBlockNode, StrapiBlockParagraphClass } from '../../types/strapi';
+import { sanitizeStrapiNodeData, StrapiBlockThemeDefault } from '../../lib';
+import type { StrapiBlockNode, StrapiBlockParagraph, StrapiBlockTheme } from '../../types';
 
 type Props<FontColors extends string> = {
     class?: string;
-    blockClass?: StrapiBlockParagraphClass;
     color?: FontColors;
     data: Array<StrapiBlockNode>;
-    getTextContentColor?: (color: string) => string;
+    theme: StrapiBlockTheme;
 }
 
-const { data, class: classes = '', color = "primary", blockClass, getTextContentColor = defaultGetTextContentColor } = Astro.props;
-
-const paragraphClasses = [];
-paragraphClasses.push(...(Array.isArray(classes) ? classes : classes.split(' ')));
-if (!paragraphClasses.find((item: string) => item.match(/.*(text-body-(base|medium|large)).*/g))) {
-    paragraphClasses.push("text-body-medium");
-}
-paragraphClasses.push(getTextContentColor(color));
+const { data, class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
 
 const sanitizedData = sanitizeStrapiNodeData(data);
 
-const textClass = {
-    strong: blockClass?.strong,
-    em: blockClass?.em,
-    a: blockClass?.a,
-};
-
 ---
-{ sanitizedData.length && (<p class={renderClasses(paragraphClasses)}>
-    <SanitizedNode data={sanitizedData} textClass={textClass as Record<string, string>} />
-</p>)}
+<p class={classes}>
+    { (sanitizedData.length === 0) && (<br />) }
+    { (sanitizedData.length > 0) && (<SanitizedNode data={sanitizedData} theme={theme.paragraph}/>) }
+</p>

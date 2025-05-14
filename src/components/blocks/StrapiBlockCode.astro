@@ -1,33 +1,21 @@
 ---
-import { sanitizeStrapiNodeData } from '../../lib/strapi';
-import { renderClasses } from '../../lib/utils';
-import type { StrapiBlockNode, StrapiBlockTextItem } from '../../types/strapi';
+import { renderPropertyClasses, sanitizeStrapiNodeData, StrapiBlockThemeDefault } from '../../lib';
+import type { StrapiBlockNode, StrapiBlockTextItem, StrapiBlockTheme } from '../../types';
 
 type Props = {
-    data: Array<StrapiBlockNode>;
     class?: string;
     language: string;
+    data: Array<StrapiBlockNode>;
+    theme: StrapiBlockTheme;
 }
 
-const { data, class: classes = '', language } = Astro.props;
-
-const defaultClasses = [
-    'mb-4',
-    'bg-gray-200',
-    'p-4',
-    'rounded-md',
-    'text-sm',
-    'font-mono',
-    'last:mb-0',
-];
-const blockClasses = [...(Array.isArray(classes) ? classes : classes.split(' '))];
-const codeBlockClasses = [...defaultClasses, ...blockClasses];
-const languageAllowed = language && (language !== 'plaintext');
+const { data, class: classes = '', language, theme = StrapiBlockThemeDefault } = Astro.props;
+const languageAllowed = true;//language && (language !== 'plaintext');
 
 const sanitizedData = sanitizeStrapiNodeData(data);
 
 ---
-{ sanitizedData.length && (<div class={renderClasses(codeBlockClasses)}>
-    { languageAllowed && (<div class="text-sm mb-2 text-gray-900"><strong>{language.charAt(0).toUpperCase() + language.slice(1)}</strong></div>) }
+{ sanitizedData.length && (<div class={classes}>
+    { languageAllowed && (<div class={renderPropertyClasses(theme, ['code', 'language'])}><strong>{language.charAt(0).toUpperCase() + language.slice(1)}</strong></div>) }
     <pre>{sanitizedData.map((item) => (item as StrapiBlockTextItem).text).join('\n')}</pre>
 </div>)}

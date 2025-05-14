@@ -1,3 +1,6 @@
+import { DeepPartial } from "./common";
+import { StrapiBlockParagraph, StrapiBlockQuote } from "./strapi";
+
 export type StrapiBlockThemeBlock = Array<string>;
 
 export type StrapiBlockThemeHeading = {
@@ -12,6 +15,7 @@ export type StrapiBlockThemeHeading = {
 
 export type StrapiBlockThemeParagraph = {
     block: StrapiBlockThemeBlock;
+    span: Array<string>;
     strong: Array<string>;
     italic: Array<string>;
     underline: Array<string>;
@@ -19,15 +23,17 @@ export type StrapiBlockThemeParagraph = {
     link: Array<string>;
 }
 
-export type StrapiBlockThemeQuote = {
-    block: StrapiBlockThemeBlock;
-    link: Array<string>;
-}   
+export type StrapiBlockThemeQuote = StrapiBlockThemeParagraph & {
+
+};
+
+export type StrapiBlockTextNodePartial = StrapiBlockThemeParagraph & StrapiBlockThemeQuote;
 
 export type StrapiBlockThemeList = {
     block: StrapiBlockThemeBlock;
     ordered: Array<string>;
     unordered: Array<string>;
+    item: Array<string>;
 }
 
 export type StrapiBlockThemeCode = {
@@ -37,6 +43,7 @@ export type StrapiBlockThemeCode = {
 export type StrapiBlockThemeImage = {
     block: StrapiBlockThemeBlock;
     image: Array<string>;
+    caption: Array<string>;
 }
 
 export type StrapiBlockTheme = {
@@ -50,8 +57,8 @@ export type StrapiBlockTheme = {
 }
 
 export type StrapiBlockUserTheme = {
-    overwrite?: Partial<StrapiBlockTheme>;
-    extend?: Partial<StrapiBlockTheme>;
+    overwrite?: DeepPartial<StrapiBlockTheme>;
+    extend?: DeepPartial<StrapiBlockTheme>;
 }
 
 export type StrapiRenderClassesPropretyType = keyof StrapiBlockThemeHeading | keyof StrapiBlockThemeParagraph | keyof StrapiBlockThemeQuote | keyof StrapiBlockThemeList | keyof StrapiBlockThemeCode | keyof StrapiBlockThemeImage;

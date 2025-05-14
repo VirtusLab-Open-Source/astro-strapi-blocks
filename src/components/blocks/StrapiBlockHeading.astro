@@ -1,89 +1,30 @@
 ---
-import type { StrapiBlockTextItem } from "../../types/strapi";
-import Typography from "../typography/Typography.astro";
-import { defaultGetHeaderTextClass, defaultGetTextContentColor } from "../../lib/utils";
+import type { StrapiBlockHeading, StrapiBlockTextItem } from "../../types/strapi";
+import { StrapiBlockTheme } from "../../types";
+import { StrapiBlockThemeDefault, getPropertyClass } from "../../lib";
 type Props = {
     level: number;
     class?: string;
     data: Array<StrapiBlockTextItem>;
+    theme: StrapiBlockTheme;
 };
 
-const { data, level = 2, class: classes = '' } = Astro.props;
+const { data, level = 2, class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
 
 const sanitizedData = data.filter(({ text }: StrapiBlockTextItem) => text);
-const headingClasses = classes ? classes.split(' ') : [];
-const headingTag = `h${level}`;
+const headingTag = `h${level}` as keyof StrapiBlockTheme['heading'];
+const Tag = headingTag;
+
+const blockClasses = classes ? classes.split(' ') : [];
+const headingClasses = [...blockClasses, ...getPropertyClass(theme, ['heading', headingTag])];
+
 ---
 
 {
     sanitizedData.length && (
         <>
             {sanitizedData.map(({ text }: StrapiBlockTextItem) => {
-                switch (level) {
-                    case 2:
-                        return (
-                            <Typography
-                                tag="h2"
-                                variant="header"
-                                size="large"
-                                class="mt-20 mb-6 sm:max-md:mt-6"
-                                getHeaderTextClass={getHeaderTextClass}
-                                getTextContentColor={getTextContentColor}
-                            >
-                                {text}
-                            </Typography>
-                        );
-                    case 3:
-                        return (
-                            <Typography
-                                tag="h3"
-                                variant="header"
-                                size="medium"
-                                class="my-6"
-                                getHeaderTextClass={getHeaderTextClass}
-                                getTextContentColor={getTextContentColor}
-                            >
-                                {text}
-                            </Typography>
-                        );
-                    case 4:
-                        return (
-                            <Typography
-                                tag="h4"
-                                variant="header"
-                                size="medium"
-                                getHeaderTextClass={getHeaderTextClass}
-                                getTextContentColor={getTextContentColor}
-                            >
-                                {text}
-                            </Typography>
-                        );
-                    case 5:
-                        return (
-                            <Typography
-                                tag="h6"
-                                variant="header"
-                                size="base"
-                                getHeaderTextClass={getHeaderTextClass}
-                                getTextContentColor={getTextContentColor}
-                            >
-                                {text}
-                            </Typography>
-                        );
-                    default:
-                        return (
-                            <Typography
-                                tag="h2"
-                                class="mt-20 mb-6 sm:max-md:mt-6"
-                                variant="header"
-                                size="xLarge"
-                                getHeaderTextClass={getHeaderTextClass}
-                                getTextContentColor={getTextContentColor}
-                            >
-                                {text}
-                            </Typography>
-                        );
-                }
+                return (<Tag class={headingClasses.join(' ')}>{text}</Tag>);
             })}
         </>
     )
