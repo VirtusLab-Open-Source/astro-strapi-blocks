@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   codecov: codecov/codecov@1.1.1
 jobs:
-  check:
+  test:
     docker:
       - image: cimg/node:20.12.2
     working_directory: ~/repo
@@ -91,15 +91,15 @@ jobs:
 
 workflows:
   version: 2
-  check-deploy:
+  test-deploy:
     jobs:
-      - check:
+      - test:
           filters:
             tags:
               only: /^v.*/
       - deploy:
           requires:
-            - check
+            - test
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
@@ -107,7 +107,7 @@ workflows:
               ignore: /.*/
       - deployBeta:
           requires:
-            - check
+            - test
           filters:
             tags:
               only: /^v.*-beta\.\d+$/

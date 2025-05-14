@@ -5,7 +5,7 @@ import StrapiBlockParagraph from './blocks/StrapiBlockParagraph.astro';
 import StrapiBlockCode from './blocks/StrapiBlockCode.astro';
 import StrapiBlockImage from './blocks/StrapiBlockImage.astro';
 
-import { StrapiBlockThemeDefault, buildThemeObject, renderPropertyClasses } from '../lib/theme';
+import { StrapiBlockThemeDefault, buildThemeObject, renderPropertyClasses } from '../lib';
 import type { StrapiBlockField, StrapiBlock, StrapiBlockTheme, StrapiBlockUserTheme } from '../types';
 
 type Props = {
@@ -17,7 +17,6 @@ type Props = {
 const { data, class: classes, theme } = Astro.props;
 
 const themeObject: StrapiBlockTheme = theme ? buildThemeObject(theme, StrapiBlockThemeDefault) : StrapiBlockThemeDefault;
-
 
 ---
 
