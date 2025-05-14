@@ -13,6 +13,9 @@
   <a href="https://circleci.com/gh/VirtusLab-Open-Source/astro-strapi-blocks">
     <img src="https://circleci.com/gh/VirtusLab-Open-Source/astro-strapi-blocks.svg?style=shield" alt="CircleCI" />
   </a>
+  <a href="https://codecov.io/gh/VirtusLab-Open-Source/astro-strapi-blocks">
+    <img src="https://codecov.io/gh/VirtusLab-Open-Source/astro-strapi-blocks/coverage.svg?branch=main" alt="codecov.io" />
+  </a>
 </div>
 
 ---

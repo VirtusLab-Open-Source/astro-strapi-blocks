@@ -38,6 +38,17 @@ jobs:
           name: Check
           command: |
             yarn check
+      - run:
+          name: Test
+          command: |
+            yarn test
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/
+      - store_test_results:
+          path: ./reports/
+      - codecov/upload:
+          flags: unittest
+          file:
       - save_cache:
           paths:
             - ./node_modules
