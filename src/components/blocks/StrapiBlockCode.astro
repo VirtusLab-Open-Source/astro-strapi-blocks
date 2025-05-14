@@ -10,7 +10,7 @@ type Props = {
 }
 
 const { data, class: classes = '', language, theme = StrapiBlockThemeDefault } = Astro.props;
-const languageAllowed = true;//language && (language !== 'plaintext');
+const languageAllowed = language && (language !== 'plaintext');
 
 const sanitizedData = sanitizeStrapiNodeData(data);
 
