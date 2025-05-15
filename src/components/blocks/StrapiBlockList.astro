@@ -1,29 +1,33 @@
 ---
 import ListItem from "./items/StrapiBlockListItem.astro";
 import List from "./items/StrapiBlockList.astro";
+import StrapiBlockCustom from "./StrapiBlockCustom.astro";
 
+import { renderPropertyClasses, StrapiBlockThemeDefault } from "../../lib";
 import type {
+    AstroComponent,
     StrapiBlockListItem,
     StrapiBlockListType,
     StrapiBlockTheme,
 } from "../../types";
-import { renderPropertyClasses, StrapiBlockThemeDefault } from "../../lib";
 
 type Props<FontColors extends string> = {
     class?: string;
     format: StrapiBlockListType;
     color?: FontColors;
     data: Array<StrapiBlockListItem>;
+    block?: AstroComponent;
     theme: StrapiBlockTheme;
 };
 
-const { data, format = "unordered", class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
+const { data, format = "unordered", class: classes = '', theme = StrapiBlockThemeDefault, block } = Astro.props;
 
 const renderData = data.filter(
     (item: StrapiBlockListItem) => item.children && item.children.length,
 );
 ---
-<div class={classes}>
+{ block && (<StrapiBlockCustom {...Astro.props} comp={block} data={renderData} />)}
+{ !block && (<div class={classes}>
     {
         format === "unordered" && (
             <List tag="ul" class={renderPropertyClasses(theme, ['list', 'unordered'])}>
@@ -49,4 +53,4 @@ const renderData = data.filter(
             </List>
         )
     }
-</div>
+</div>)}

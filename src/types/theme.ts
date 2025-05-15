@@ -1,5 +1,4 @@
 import { DeepPartial } from "./common";
-import { StrapiBlockParagraph, StrapiBlockQuote } from "./strapi";
 
 export type StrapiBlockThemeBlock = Array<string>;
 

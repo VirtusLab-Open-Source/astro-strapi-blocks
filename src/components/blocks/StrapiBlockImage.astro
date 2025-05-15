@@ -1,24 +1,30 @@
 ---
 import { Image } from 'astro:assets';
+
+import StrapiBlockCustom from './StrapiBlockCustom.astro';
+
 import { renderPropertyClasses, sanitizeStrapiNodeData, StrapiBlockThemeDefault } from '../../lib';
-import type { StrapiBlockNode, StrapiMedia, StrapiBlockTextItem, StrapiBlockImage, StrapiBlockTheme } from '../../types';
+import type { StrapiBlockNode, StrapiMedia, StrapiBlockTextItem, StrapiBlockImage, StrapiBlockTheme, AstroComponent } from '../../types';
 
 type Props = {
     class?: string;
     children?: Array<StrapiBlockNode>;
     format?: StrapiBlockImage['format'];
     data: StrapiMedia;
+    block?: AstroComponent;
     theme: StrapiBlockTheme;
 }
 
-const { children, data, format = 'original', class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
+const { children, data, format = 'original', class: classes = '', theme = StrapiBlockThemeDefault, block } = Astro.props;
 
 const sanitizedData = children ? sanitizeStrapiNodeData(children) : undefined;
 const imageFormat = format !== 'original' ? data.formats[format as keyof StrapiMedia['formats']] : data;
 const imageSource = imageFormat || data;
 
 ---
-{ imageSource && (<div class={classes}>
+
+{ block && (<StrapiBlockCustom {...Astro.props} comp={block} />)}
+{ !block && imageSource && (<div class={classes}>
     <Image class={renderPropertyClasses(theme, ['image', 'image'])} src={imageSource.url} alt={imageSource.alternativeText} width={imageSource.width} height={imageSource.height} />
     { sanitizedData && (<div class={renderPropertyClasses(theme, ['image', 'caption'])}><em>{sanitizedData.map((item) => (item as StrapiBlockTextItem).text).join('\n')}</em></div>) }
 </div>)}

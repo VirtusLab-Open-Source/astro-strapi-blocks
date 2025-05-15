@@ -1,0 +1,10 @@
+---
+import type { AstroComponentProps } from "../../types";
+type Props = AstroComponentProps;
+
+const { comp, ...props } = Astro.props;
+
+const Comp = comp;
+---
+
+<Comp {...props} />

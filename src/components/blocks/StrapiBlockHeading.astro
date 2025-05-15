@@ -1,14 +1,18 @@
 ---
-import type { StrapiBlockHeading, StrapiBlockTextItem, StrapiBlockTheme } from "../../types";
+import StrapiBlockCustom from "./StrapiBlockCustom.astro";
+
 import { StrapiBlockThemeDefault, getPropertyClass } from "../../lib";
+import type { AstroComponent, StrapiBlockTextItem, StrapiBlockTheme } from "../../types";
+
 type Props = {
     level: number;
     class?: string;
     data: Array<StrapiBlockTextItem>;
+    block?: AstroComponent;
     theme: StrapiBlockTheme;
 };
 
-const { data, level = 2, class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
+const { data, level = 2, class: classes = '', theme = StrapiBlockThemeDefault, block } = Astro.props;
 
 const sanitizedData = data.filter(({ text }: StrapiBlockTextItem) => text);
 const headingTag = `h${level}` as keyof StrapiBlockTheme['heading'];
@@ -18,13 +22,14 @@ const blockClasses = classes ? classes.split(' ') : [];
 const headingClasses = [...blockClasses, ...getPropertyClass(theme, ['heading', headingTag])];
 
 ---
-
 {
     sanitizedData.length && (
         <>
-            {sanitizedData.map(({ text }: StrapiBlockTextItem) => {
-                return (<Tag class={headingClasses.join(' ')}>{text}</Tag>);
-            })}
+            { block && (<StrapiBlockCustom {...Astro.props} comp={block} data={sanitizedData[0]} />)}
+            { !block && (sanitizedData.map(({ text }: StrapiBlockTextItem) => {
+                    return (<Tag class={headingClasses.join(' ')}>{text}</Tag>);
+                })
+            )}
         </>
     )
 }

@@ -6,15 +6,16 @@ import StrapiBlockCode from './blocks/StrapiBlockCode.astro';
 import StrapiBlockImage from './blocks/StrapiBlockImage.astro';
 
 import { StrapiBlockThemeDefault, buildThemeObject, renderPropertyClasses } from '../lib';
-import type { StrapiBlockField, StrapiBlock, StrapiBlockTheme, StrapiBlockUserTheme } from '../types';
+import type { StrapiBlockField, StrapiBlock, StrapiBlockTheme, StrapiBlockUserTheme,StrapiBlockUserComponents } from '../types';
 
 type Props = {
     class?: string;
     theme?: StrapiBlockUserTheme;
+    blocks?: StrapiBlockUserComponents;
     data: StrapiBlockField;
 }
 
-const { data, class: classes, theme } = Astro.props;
+const { data, class: classes, theme, blocks } = Astro.props;
 
 const themeObject: StrapiBlockTheme = theme ? buildThemeObject(theme, StrapiBlockThemeDefault) : StrapiBlockThemeDefault;
 
@@ -28,18 +29,21 @@ const themeObject: StrapiBlockTheme = theme ? buildThemeObject(theme, StrapiBloc
                     class={renderPropertyClasses(themeObject, ['heading', 'block'])} 
                     data={block.children} 
                     level={block.level}
+                    block={blocks?.heading}
                     theme={themeObject}
                 />);
             case "paragraph":
                 return (<StrapiBlockParagraph 
                     class={renderPropertyClasses(themeObject, ['paragraph', 'block'])} 
                     data={block.children} 
+                    block={blocks?.paragraph}
                     theme={themeObject}
                 />);
             case "quote":
                 return (<StrapiBlockParagraph 
                     class={renderPropertyClasses(themeObject, ['quote', 'block'])} 
                     data={block.children} 
+                    block={blocks?.quote}
                     theme={themeObject}
                 />);
             case "list":
@@ -47,6 +51,7 @@ const themeObject: StrapiBlockTheme = theme ? buildThemeObject(theme, StrapiBloc
                     class={renderPropertyClasses(themeObject, ['list', 'block'])} 
                     data={block.children} 
                     format={block.format} 
+                    block={blocks?.list}
                     theme={themeObject}
                 />);
             case "code":
@@ -54,6 +59,7 @@ const themeObject: StrapiBlockTheme = theme ? buildThemeObject(theme, StrapiBloc
                     class={renderPropertyClasses(themeObject, ['code', 'block'])} 
                     data={block.children} 
                     language={block.language} 
+                    block={blocks?.code}
                     theme={themeObject}
                 />);
             case "image":
@@ -62,6 +68,7 @@ const themeObject: StrapiBlockTheme = theme ? buildThemeObject(theme, StrapiBloc
                     data={block.image} 
                     format={block.format} 
                     children={block.children} 
+                    block={blocks?.image}
                     theme={themeObject}
                 />);
             default:

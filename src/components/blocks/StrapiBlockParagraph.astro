@@ -1,21 +1,31 @@
 ---
 import SanitizedNode from './items/StrapiBlockNode.astro';
+import StrapiBlockCustom from './StrapiBlockCustom.astro';
+
 import { sanitizeStrapiNodeData, StrapiBlockThemeDefault } from '../../lib';
-import type { StrapiBlockNode, StrapiBlockParagraph, StrapiBlockTheme } from '../../types';
+import type { AstroComponent, StrapiBlockNode, StrapiBlockParagraph, StrapiBlockTheme } from '../../types';
 
 type Props<FontColors extends string> = {
     class?: string;
     color?: FontColors;
     data: Array<StrapiBlockNode>;
+    block?: AstroComponent;
     theme: StrapiBlockTheme;
 }
 
-const { data, class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
+const { data, class: classes = '', theme = StrapiBlockThemeDefault, block } = Astro.props;
 
 const sanitizedData = sanitizeStrapiNodeData(data);
+const isNotEmpty = sanitizedData.length > 0;
 
 ---
-<p class={classes}>
-    { (sanitizedData.length === 0) && (<br />) }
-    { (sanitizedData.length > 0) && (<SanitizedNode data={sanitizedData} theme={theme.paragraph}/>) }
-</p>
+{ isNotEmpty && (
+    <>
+        { block && (<StrapiBlockCustom {...Astro.props} comp={block} data={sanitizedData[0]} />)}
+        { !block && (<p class={classes}>
+            { isNotEmpty && (<SanitizedNode data={sanitizedData} theme={theme.paragraph}/>) }
+        </p>)}
+    </>
+)}
+
+{ !isNotEmpty && (<p class={classes}><br /></p>) }
