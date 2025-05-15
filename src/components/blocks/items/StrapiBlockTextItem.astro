@@ -1,27 +1,32 @@
 ---
-import type { StrapiBlockTextItem } from '../../../types/strapi';
+import type { StrapiBlockTextItem, StrapiBlockTextNodePartial } from '../../../types';
 
 type Props = {
     data: StrapiBlockTextItem;
-    textClass?: Record<string, string>;
+    theme: StrapiBlockTextNodePartial;
 };
 
-const { data, textClass } = Astro.props;
+const { data, theme = {} as StrapiBlockTextNodePartial } = Astro.props;
 const { text, italic, bold, underline, strikethrough } = data;
 
 const tags = [];
+let classes: Array<string> = [];
 
 if (italic) {
     tags.push('em');
+    classes = [...theme.italic];
 }
 if (bold) {
     tags.push('strong');
+    classes = [...theme.strong];
 }
 if (underline) {
     tags.push('u');
+    classes = [...theme.underline];
 }
 if (strikethrough) {
     tags.push('s');
+    classes = [...theme.strikethrough];
 }
 
 const renderTagsStack = (text: string, tags: Array<string>) => {
@@ -29,9 +34,9 @@ const renderTagsStack = (text: string, tags: Array<string>) => {
         return text;
     }
     return tags.reduce((acc, tag) => {
-        return `<${tag} class=${textClass?.[tag]}>${acc}</${tag}>`;
+        return `<${tag} class=${classes?.join(' ')}>${acc}</${tag}>`;
     }, text);
 };
 
 ---
-<span class={textClass?.span} set:html={renderTagsStack(text, tags)} />
+<span class={theme.span?.join(' ')} set:html={renderTagsStack(text, tags)} />

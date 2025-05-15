@@ -13,6 +13,9 @@
   <a href="https://circleci.com/gh/VirtusLab-Open-Source/astro-strapi-blocks">
     <img src="https://circleci.com/gh/VirtusLab-Open-Source/astro-strapi-blocks.svg?style=shield" alt="CircleCI" />
   </a>
+  <a href="https://codecov.io/gh/VirtusLab-Open-Source/astro-strapi-blocks">
+    <img src="https://codecov.io/gh/VirtusLab-Open-Source/astro-strapi-blocks/coverage.svg?branch=main" alt="codecov.io" />
+  </a>
 </div>
 
 ---
@@ -65,19 +68,30 @@ import StrapiBlocks from '@sensinum/astro-strapi-blocks';
 <StrapiBlocks 
   data={strapiBlockData}
   class="custom-class"
-  color="primary"
-  blockClass={{
-    paragraph: {
-      strong: "custom-strong-class",
-      em: "custom-em-class",
-      a: "custom-link-class",
-      master: "custom-paragraph-class"
-    },
-    heading: "custom-heading-class",
-    list: "custom-list-class",
-    quote: "custom-quote-class",
-    code: "custom-code-class",
-    image: "custom-image-class"
+  theme={{
+    extend: { // 'extend' and/or 'overwrite'
+      paragraph: {
+        block: ['custom-paragraph-class'],
+        strong: ['custom-strong-class'],
+        italic: ['custom-em-class'],
+        link: ['custom-link-class']
+      },
+      heading: {
+        block: ['custom-heading-class']
+      },
+      list: {
+        block: ['custom-list-class']
+      },
+      quote: {
+        block: ['custom-quote-class']
+      },
+      code: {
+        block: ['custom-code-class']
+      },
+      image: {
+        block: ['custom-image-class']
+      }
+    }
   }}
 />
 ```
@@ -90,83 +104,124 @@ import StrapiBlocks from '@sensinum/astro-strapi-blocks';
 |------------|----------|-------------|
 | `data`     | `StrapiBlockField` | Required. The Strapi block data to render. This should be the raw block data from your Strapi API response. |
 | `class`    | `string` | Optional. Additional CSS classes to apply to the component wrapper. |
-| `color`    | `FontColors` | Optional. Color theme for the block content. Available values: `primary`, `secondary`, `accent`, etc. As well you can parametrize it. |
-| `blockClass` | `StrapiBlockClassExtension` | Optional. Custom class extension for specific block types. Allows for block-specific styling. |
+| `theme`    | `StrapiBlockUserTheme` | Optional. Theme configuration for blocks. Allows for extending or overwriting default styles. |
 
-### Block Class Configuration
+### Theme Configuration
 
-The `blockClass` property allows you to customize the styling of different block types and their nested elements. Here's a detailed breakdown of the configuration options:
+The `theme` property allows you to customize the styling of different block types and their nested elements. You can either extend the default theme or completely overwrite it. Here's a detailed breakdown of the configuration options:
 
 ```typescript
-type BlockClassConfig = {
-  // Paragraph block configuration
-  paragraph?: string | {
-    // Nested elements within paragraph
-    strong?: string;  // Custom class for <strong> elements
-    em?: string;     // Custom class for <em> elements
-    a?: string;      // Custom class for <a> elements
-    s?: string;
-    u?: string;
-    master?: string; // Master class for the entire paragraph
+type StrapiBlockUserTheme = {
+  extend?: {
+    block?: string[];
+    heading?: {
+      block?: string[];
+      h1?: string[];
+      h2?: string[];
+      h3?: string[];
+      h4?: string[];
+      h5?: string[];
+      h6?: string[];
+    };
+    paragraph?: {
+      block?: string[];
+      span?: string[];
+      strong?: string[];
+      italic?: string[];
+      underline?: string[];
+      strikethrough?: string[];
+      link?: string[];
+    };
+    quote?: {
+      block?: string[];
+      span?: string[];
+      strong?: string[];
+      italic?: string[];
+      underline?: string[];
+      strikethrough?: string[];
+      link?: string[];
+    };
+    list?: {
+      block?: string[];
+      ordered?: string[];
+      unordered?: string[];
+      item?: string[];
+    };
+    code?: {
+      block?: string[];
+      language?: string[];
+    };
+    image?: {
+      block?: string[];
+      image?: string[];
+      caption?: string[];
+    };
   };
-  
-  // Heading block configuration
-  heading?: string;  // Custom class for heading elements
-  
-  // List block configuration
-  list?: string;     // Custom class for list elements
-  
-  // Quote block configuration
-  quote?: string;     // Custom class for quote elements
-
-  // Code block configuration
-  code?: string;     // Custom class for code elements
-
-  // Image block configuration
-  image?: string;     // Custom class for image elements
+  overwrite?: {
+    // Same structure as extend, but will replace default values instead of extending them
+  };
 }
 ```
 
 #### Examples
 
-1. Simple string configuration:
+1. Extending default theme:
 ```astro
 <StrapiBlocks 
-  blockClass={{
-    paragraph: "my-paragraph-class",
-    heading: "my-heading-class",
-    list: "my-list-class"
-  }}
-/>
-```
-
-2. Detailed paragraph configuration:
-```astro
-<StrapiBlocks 
-  blockClass={{
-    paragraph: {
-      strong: "font-bold text-primary",
-      em: "italic text-secondary",
-      a: "text-accent hover:underline",
-      master: "text-base leading-relaxed"
+  theme={{
+    extend: {
+      paragraph: {
+        block: ['my-paragraph-class'],
+        strong: ['font-bold text-primary'],
+        italic: ['italic text-secondary'],
+        link: ['text-accent hover:underline']
+      },
+      heading: {
+        block: ['my-heading-class'],
+        h1: ['text-4xl font-bold']
+      }
     }
   }}
 />
 ```
 
-3. Mixed configuration:
+2. Overwriting default theme:
 ```astro
 <StrapiBlocks 
-  blockClass={{
-    paragraph: {
-      strong: "font-bold",
-      master: "text-base"
-    },
-    heading: "text-2xl font-bold",
-    list: "list-disc pl-4"
+  theme={{
+    overwrite: {
+      paragraph: {
+        block: ['my-paragraph-class'],
+        strong: ['font-bold'],
+        italic: ['italic'],
+        link: ['text-blue-500']
+      }
+    }
   }}
 />
 ```
+
+3. Mixed configuration (extend and overwrite):
+```astro
+<StrapiBlocks 
+  theme={{
+    extend: {
+      paragraph: {
+        strong: ['font-bold'],
+        italic: ['italic']
+      }
+    },
+    overwrite: {
+      heading: {
+        block: ['text-2xl'],
+        h1: ['text-4xl font-bold']
+      }
+    }
+  }}
+/>
+```
+
+The default theme includes Tailwind CSS classes for common styling needs. You can extend or overwrite these classes to match your design requirements.
 
 ## 🔧 Development
 

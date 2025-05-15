@@ -5,48 +5,48 @@ import List from "./items/StrapiBlockList.astro";
 import type {
     StrapiBlockListItem,
     StrapiBlockListType,
-} from "../../types/strapi";
-import { defaultGetTextContentColor, renderClasses } from "../../lib/utils";
+    StrapiBlockTheme,
+} from "../../types";
+import { renderPropertyClasses, StrapiBlockThemeDefault } from "../../lib";
 
 type Props<FontColors extends string> = {
     class?: string;
     format: StrapiBlockListType;
     color?: FontColors;
     data: Array<StrapiBlockListItem>;
-    getTextContentColor?: (color: string) => string;
+    theme: StrapiBlockTheme;
 };
 
-const { data, format = "unordered", class: classes = "", color = "primary", getTextContentColor = defaultGetTextContentColor } = Astro.props;
-
-const listClasses = classes.split(" ");
+const { data, format = "unordered", class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
 
 const renderData = data.filter(
     (item: StrapiBlockListItem) => item.children && item.children.length,
 );
-
-if (listClasses.length === 0) {
-    listClasses.push("mb-2");
-}
-
-listClasses.push(getTextContentColor(color))
 ---
+<div class={classes}>
+    {
+        format === "unordered" && (
+            <List tag="ul" class={renderPropertyClasses(theme, ['list', 'unordered'])}>
+                {renderData.map((item: StrapiBlockListItem) => (
+                    <ListItem 
+                        class={renderPropertyClasses(theme, ['list', 'item'])}
+                        data={item.children}
+                        theme={theme} />
+                ))}
+            </List>
+        )
+    }
 
-{
-    format === "unordered" && (
-        <List tag="ul" class={renderClasses([...listClasses, "list-disc", "pl-6"])}>
-            {renderData.map((item: StrapiBlockListItem) => (
-                <ListItem data={item.children} />
-            ))}
-        </List>
-    )
-}
-
-{
-    format === "ordered" && (
-        <List tag="ol" class={renderClasses([...listClasses, "list-decimal"])}>
-            {renderData.map((item: StrapiBlockListItem) => (
-                <ListItem data={item.children} />
-            ))}
-        </List>
-    )
-}
+    {
+        format === "ordered" && (
+            <List tag="ol" class={renderPropertyClasses(theme, ['list', 'ordered'])}>
+                {renderData.map((item: StrapiBlockListItem) => (
+                    <ListItem 
+                    class={renderPropertyClasses(theme, ['list', 'item'])} 
+                    data={item.children} 
+                    theme={theme} />
+                ))}
+            </List>
+        )
+    }
+</div>
