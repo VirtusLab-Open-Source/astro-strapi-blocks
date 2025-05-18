@@ -39,11 +39,11 @@
 ## 📦 Installation
 
 ```bash
-yarn add @sensinum/astro-strapi-blocks
+yarn add @sensinum/astro-strapi-blocks@latest
 ```
 
 ```bash
-npm install @sensinum/astro-strapi-blocks
+npm install @sensinum/astro-strapi-blocks@latest
 ```
 
 ## 🚀 Features
@@ -55,7 +55,10 @@ npm install @sensinum/astro-strapi-blocks
   - 📋 List (ordered and unordered)
   - 💻 Code blocks
   - 🖼️ Image blocks
-- 🎯 Flexible block class configuration for custom styling
+- 🎨 Flexible block class configuration for custom styling
+- 🔄 Custom block components support:
+  - 🎯 Override default block rendering
+  - ⚡ Full control over block output
 - 🛠️ TypeScript support with full type definitions
 
 ## 🖥️ Usage
@@ -68,6 +71,11 @@ import StrapiBlocks from '@sensinum/astro-strapi-blocks';
 <StrapiBlocks 
   data={strapiBlockData}
   class="custom-class"
+  blocks={{
+    code: CustomCodeBlock,
+    heading: CustomHeadingBlock,
+    paragraph: CustomParagraphBlock
+  }}
   theme={{
     extend: { // 'extend' and/or 'overwrite'
       paragraph: {
@@ -105,6 +113,7 @@ import StrapiBlocks from '@sensinum/astro-strapi-blocks';
 | `data`     | `StrapiBlockField` | Required. The Strapi block data to render. This should be the raw block data from your Strapi API response. |
 | `class`    | `string` | Optional. Additional CSS classes to apply to the component wrapper. |
 | `theme`    | `StrapiBlockUserTheme` | Optional. Theme configuration for blocks. Allows for extending or overwriting default styles. |
+| `blocks`   | `Record<string, AstroComponent>` | Optional. Custom components for specific block types. Use this to override default block rendering. Example: `{ code: CustomCodeBlock }` |
 
 ### Theme Configuration
 
@@ -162,6 +171,60 @@ type StrapiBlockUserTheme = {
   };
 }
 ```
+
+#### Default Theme Reference
+
+Here's the complete default theme object that you can use as a reference when extending or overwriting:
+
+```typescript
+const StrapiBlockThemeDefault = {
+  block: ['mb-4'],
+  heading: {
+    block: ['mb-4'],
+    h1: ['text-4xl font-bold mb-4'],
+    h2: ['text-3xl font-bold mb-3'],
+    h3: ['text-2xl font-bold mb-3'],
+    h4: ['text-xl font-bold mb-2'],
+    h5: ['text-lg font-bold mb-2'],
+    h6: ['text-base font-bold mb-2']
+  },
+  paragraph: {
+    block: ['mb-4'],
+    span: [''],
+    strong: ['font-bold'],
+    italic: ['italic'],
+    underline: ['underline'],
+    strikethrough: ['line-through'],
+    link: ['text-blue-600 hover:underline']
+  },
+  quote: {
+    block: ['border-l-4 border-gray-300 pl-4 italic mb-4'],
+    span: [''],
+    strong: ['font-bold'],
+    italic: ['italic'],
+    underline: ['underline'],
+    strikethrough: ['line-through'],
+    link: ['text-blue-600 hover:underline']
+  },
+  list: {
+    block: ['mb-4'],
+    ordered: ['list-decimal list-inside'],
+    unordered: ['list-disc list-inside'],
+    item: ['mb-1']
+  },
+  code: {
+    block: ['bg-gray-100 p-4 rounded mb-4 font-mono text-sm'],
+    language: ['text-gray-600 text-sm mb-2']
+  },
+  image: {
+    block: ['mb-4'],
+    image: ['max-w-full h-auto rounded'],
+    caption: ['text-gray-600 text-sm mt-2']
+  }
+}
+```
+
+This default theme provides a clean, modern look using Tailwind CSS classes. You can use this as a starting point for your custom themes.
 
 #### Examples
 
@@ -222,6 +285,128 @@ type StrapiBlockUserTheme = {
 ```
 
 The default theme includes Tailwind CSS classes for common styling needs. You can extend or overwrite these classes to match your design requirements.
+
+### Component Customization
+
+You can override any built-in block component with your own Astro component. This allows for complete control over the rendering of each block type while maintaining the same input props structure.
+
+#### Usage
+
+```astro
+---
+import StrapiBlocks from '@sensinum/astro-strapi-blocks';
+import MyCustomHeading from '../components/MyCustomHeading.astro';
+import MyCustomParagraph from '../components/MyCustomParagraph.astro';
+---
+
+<StrapiBlocks 
+  data={strapiBlockData}
+  blocks={{
+    heading: MyCustomHeading,
+    paragraph: MyCustomParagraph
+  }}
+/>
+```
+
+#### Available Block Types
+
+You can override any of the following block types:
+- `heading` - For header blocks (H1-H6)
+- `paragraph` - For paragraph blocks
+- `quote` - For quote blocks
+- `list` - For ordered and unordered lists
+- `code` - For code blocks
+- `image` - For image blocks
+
+#### Block Type Properties
+
+Each block type has its own specific properties. Here's a detailed breakdown of all available properties for each block type:
+
+##### Heading Block
+```typescript
+type HeadingBlockProps = {
+  data: Array<StrapiBlockNode>;  // Text content nodes
+  class?: string;                // Additional CSS classes
+  theme: StrapiBlockTheme;       // Theme configuration
+  level: 1 | 2 | 3 | 4 | 5 | 6; // Heading level (h1-h6)
+}
+```
+
+##### Paragraph Block
+```typescript
+type ParagraphBlockProps = {
+  data: Array<StrapiBlockNode>;  // Text content nodes with formatting
+  class?: string;                // Additional CSS classes
+  theme: StrapiBlockTheme;       // Theme configuration
+}
+```
+
+##### Quote Block
+```typescript
+type QuoteBlockProps = {
+  data: Array<StrapiBlockNode>;  // Text content nodes with formatting
+  class?: string;                // Additional CSS classes
+  theme: StrapiBlockTheme;       // Theme configuration
+}
+```
+
+##### List Block
+```typescript
+type ListBlockProps = {
+  data: Array<StrapiBlockNode>;  // List items
+  class?: string;                // Additional CSS classes
+  theme: StrapiBlockTheme;       // Theme configuration
+  format: 'ordered' | 'unordered'; // List type
+}
+```
+
+##### Code Block
+```typescript
+type CodeBlockProps = {
+  data: Array<StrapiBlockNode>;  // Code content nodes
+  class?: string;                // Additional CSS classes
+  theme: StrapiBlockTheme;       // Theme configuration
+  language: string;              // Programming language
+}
+```
+
+##### Image Block
+```typescript
+type ImageBlockProps = {
+  data: Array<StrapiBlockNode>;  // Image content nodes
+  class?: string;                // Additional CSS classes
+  theme: StrapiBlockTheme;       // Theme configuration
+  url: string;                   // Image URL
+  alternativeText?: string;      // Alt text for accessibility
+  caption?: string;              // Image caption
+}
+```
+
+#### Example Custom Component
+
+Here's an example of a custom heading component:
+
+```astro
+---
+// MyCustomHeading.astro
+import { renderPropertyClasses } from '@sensinum/astro-strapi-blocks';
+import type { StrapiBlockNode, StrapiBlockTheme } from '@sensinum/astro-strapi-blocks';
+
+type Props = {
+  data: Array<StrapiBlockNode>;
+  class?: string;
+  theme: StrapiBlockTheme;
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+const { data, class: classes = '', theme, level = 1 } = Astro.props;
+const Tag = `h${level}`;
+---
+
+<Tag class={renderPropertyClasses(theme, ['heading', `h${level}`], classes)}>
+  {data.map((item) => item.text).join('')}
+</Tag>
+```
 
 ## 🔧 Development
 
