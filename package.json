@@ -1,6 +1,6 @@
 {
   "name": "@sensinum/astro-strapi-blocks",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Astro components for Strapi Block Field",
   "keywords": ["astro", "strapi", "blocks", "components", "astro-component", "withastro", "astro-loader", "content-layer", "astro-integration"],
   "type": "module",
@@ -23,11 +23,8 @@
     "url": "https://github.com/VirtusLab-Open-Source/astro-strapi-blocks"
   },
   "exports": {
-    ".": {
-      "types": "./src/index.d.ts",
-      "source": "./src/components/StrapiBlocks.astro",
-      "default": "./src/components/StrapiBlocks.astro"
-    },
+    ".": "./src/index.ts",
+    "./astro": "./src/components/StrapiBlocks.astro",
     "./package.json": "./package.json"
   },
   "files": [
