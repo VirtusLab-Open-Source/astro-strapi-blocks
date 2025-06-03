@@ -65,7 +65,7 @@ npm install @sensinum/astro-strapi-blocks@latest
 
 ```astro
 ---
-import StrapiBlocks from '@sensinum/astro-strapi-blocks';
+import { StrapiBlocks } from '@sensinum/astro-strapi-blocks';
 ---
 
 <StrapiBlocks 
@@ -294,7 +294,7 @@ You can override any built-in block component with your own Astro component. Thi
 
 ```astro
 ---
-import StrapiBlocks from '@sensinum/astro-strapi-blocks';
+import { StrapiBlocks } from '@sensinum/astro-strapi-blocks';
 import MyCustomHeading from '../components/MyCustomHeading.astro';
 import MyCustomParagraph from '../components/MyCustomParagraph.astro';
 ---
