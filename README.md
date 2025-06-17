@@ -34,7 +34,6 @@
 ## 📋 Requirements
 
 - Astro ^5.5.0
-- TailwindCSS ^4.0.0
 
 ## 📦 Installation
 
