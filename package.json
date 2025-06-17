@@ -1,6 +1,6 @@
 {
   "name": "@sensinum/astro-strapi-blocks",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Astro components for Strapi Block Field",
   "keywords": ["astro", "strapi", "blocks", "components", "astro-component", "withastro", "astro-loader", "content-layer", "astro-integration"],
   "type": "module",
@@ -43,13 +43,11 @@
     "@types/node": "^20.0.0",
     "astro": "^5.5.0",
     "jest": "^29.7.0",
-    "tailwindcss": "^4.0.0",
     "ts-jest": "^29.3.2",
     "typescript": "^5.0.0"
   },
   "peerDependencies": {
-    "astro": "^5.5.0",
-    "tailwindcss": "^4.0.0"
+    "astro": "^5.5.0"
   },
   "engines": {
     "node": ">=18.17.0",
