@@ -21,7 +21,7 @@ const isNotEmpty = sanitizedData.length > 0;
 ---
 { isNotEmpty && (
     <>
-        { block && (<StrapiBlockCustom {...Astro.props} comp={block} data={sanitizedData[0]} />)}
+        { block && (<StrapiBlockCustom {...Astro.props} comp={block} data={sanitizedData} />)}
         { !block && (<p class={classes}>
             { isNotEmpty && (<SanitizedNode data={sanitizedData} theme={theme.paragraph}/>) }
         </p>)}
