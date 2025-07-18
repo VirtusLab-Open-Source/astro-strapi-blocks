@@ -180,12 +180,12 @@ const StrapiBlockThemeDefault = {
   block: ['mb-4'],
   heading: {
     block: ['mb-4'],
-    h1: ['text-4xl font-bold mb-4'],
-    h2: ['text-3xl font-bold mb-3'],
-    h3: ['text-2xl font-bold mb-3'],
-    h4: ['text-xl font-bold mb-2'],
-    h5: ['text-lg font-bold mb-2'],
-    h6: ['text-base font-bold mb-2']
+    h1: ['text-4xl', 'font-bold', 'mb-4'],
+    h2: ['text-3xl', 'font-bold', 'mb-3'],
+    h3: ['text-2xl', 'font-bold', 'mb-3'],
+    h4: ['text-xl', 'font-bold', 'mb-2'],
+    h5: ['text-lg', 'font-bold', 'mb-2'],
+    h6: ['text-base', 'font-bold', 'mb-2']
   },
   paragraph: {
     block: ['mb-4'],
@@ -194,31 +194,31 @@ const StrapiBlockThemeDefault = {
     italic: ['italic'],
     underline: ['underline'],
     strikethrough: ['line-through'],
-    link: ['text-blue-600 hover:underline']
+    link: ['text-blue-600', 'hover:underline']
   },
   quote: {
-    block: ['border-l-4 border-gray-300 pl-4 italic mb-4'],
+    block: ['border-l-4', 'border-gray-300', 'pl-4', 'italic', 'mb-4'],
     span: [''],
     strong: ['font-bold'],
     italic: ['italic'],
     underline: ['underline'],
     strikethrough: ['line-through'],
-    link: ['text-blue-600 hover:underline']
+    link: ['text-blue-600', 'hover:underline']
   },
   list: {
     block: ['mb-4'],
-    ordered: ['list-decimal list-inside'],
-    unordered: ['list-disc list-inside'],
+    ordered: ['list-decimal', 'list-inside'],
+    unordered: ['list-disc', 'list-inside'],
     item: ['mb-1']
   },
   code: {
-    block: ['bg-gray-100 p-4 rounded mb-4 font-mono text-sm'],
-    language: ['text-gray-600 text-sm mb-2']
+    block: ['bg-gray-100', 'p-4', 'rounded', 'mb-4', 'font-mono', 'text-sm'],
+    language: ['text-gray-600', 'text-sm', 'mb-2']
   },
   image: {
     block: ['mb-4'],
-    image: ['max-w-full h-auto rounded'],
-    caption: ['text-gray-600 text-sm mt-2']
+    image: ['max-w-full', 'h-auto', 'rounded'],
+    caption: ['text-gray-600', 'text-sm mt-2']
   }
 }
 ```
@@ -234,13 +234,13 @@ This default theme provides a clean, modern look using Tailwind CSS classes. You
     extend: {
       paragraph: {
         block: ['my-paragraph-class'],
-        strong: ['font-bold text-primary'],
-        italic: ['italic text-secondary'],
-        link: ['text-accent hover:underline']
+        strong: ['font-bold', 'text-primary'],
+        italic: ['italic', 'text-secondary'],
+        link: ['text-accent', 'hover:underline']
       },
       heading: {
         block: ['my-heading-class'],
-        h1: ['text-4xl font-bold']
+        h1: ['text-4xl', 'font-bold']
       }
     }
   }}
@@ -276,7 +276,7 @@ This default theme provides a clean, modern look using Tailwind CSS classes. You
     overwrite: {
       heading: {
         block: ['text-2xl'],
-        h1: ['text-4xl font-bold']
+        h1: ['text-4xl', 'font-bold']
       }
     }
   }}
