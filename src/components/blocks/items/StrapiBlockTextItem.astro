@@ -34,7 +34,7 @@ const renderTagsStack = (text: string, tags: Array<string>) => {
         return text;
     }
     return tags.reduce((acc, tag) => {
-        return `<${tag} class=${classes?.join(' ')}>${acc}</${tag}>`;
+        return `<${tag} class="${classes?.join(' ')}">${acc}</${tag}>`;
     }, text);
 };
 
