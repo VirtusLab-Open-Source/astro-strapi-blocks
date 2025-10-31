@@ -6,12 +6,14 @@ import type { StrapiBlockTextItem, StrapiBlockTextNodePartial } from "../../../t
 
 type Props = {
     url: string;
+    target?: string;
+    rel?: string;
     class?: string;
     data: Array<StrapiBlockTextItem>;
     theme: StrapiBlockTextNodePartial;
 };
 
-const { data, url, class: classes = "", theme = {} as StrapiBlockTextNodePartial } = Astro.props;
+const { data, url, target = "", rel = "", class: classes = "", theme = {} as StrapiBlockTextNodePartial } = Astro.props;
 
 ---
 
@@ -20,6 +22,8 @@ const { data, url, class: classes = "", theme = {} as StrapiBlockTextNodePartial
         <a
             class={classes}
             href={url}
+            target={target}
+            rel={rel}
         >
             {data.map((item: StrapiBlockTextItem) => (
                 <Text data={item} theme={theme} />

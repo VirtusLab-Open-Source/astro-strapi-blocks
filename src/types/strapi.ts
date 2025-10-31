@@ -31,6 +31,8 @@ export type StrapiBlockTextItem = {
 
 export type StrapiBlockLinkItem = {
     url: string;
+    target?: string;
+    rel?: string;
     type: 'link';
     children: Array<StrapiBlockTextItem>;
 };

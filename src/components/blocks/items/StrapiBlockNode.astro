@@ -1,24 +1,40 @@
 ---
-import Text from './StrapiBlockTextItem.astro';
-import Link from './StrapiBlockLinkItem.astro';
-import type { StrapiBlockTextItem, StrapiBlockLinkItem, StrapiBlockNode, StrapiBlockTextNodePartial } from '../../../types';
+import Text from "./StrapiBlockTextItem.astro";
+import Link from "./StrapiBlockLinkItem.astro";
+import type {
+    StrapiBlockTextItem,
+    StrapiBlockLinkItem,
+    StrapiBlockNode,
+    StrapiBlockTextNodePartial,
+} from "../../../types";
 
 type Props = {
     data: Array<StrapiBlockNode>;
     theme: StrapiBlockTextNodePartial;
-}
+};
 
 const { data, theme = {} as StrapiBlockTextNodePartial } = Astro.props;
-
 ---
-{ data.map((item: StrapiBlockNode) => {
-    if ((item as StrapiBlockTextItem)?.text) {
-        return (<Text data={item as StrapiBlockTextItem} theme={theme} />);
-    }
 
-    if ((item as StrapiBlockLinkItem)?.url) {
-        return (<Link class={theme.link.join(' ')} url={(item as StrapiBlockLinkItem)?.url} data={(item as StrapiBlockLinkItem).children} theme={theme} />);
-    }
+{
+    data.map((item: StrapiBlockNode) => {
+        if ((item as StrapiBlockTextItem)?.text) {
+            return <Text data={item as StrapiBlockTextItem} theme={theme} />;
+        }
 
-    return null;
-}) }
+        if ((item as StrapiBlockLinkItem)?.url) {
+            return (
+                <Link
+                    class={theme.link.join(" ")}
+                    url={(item as StrapiBlockLinkItem)?.url}
+                    target={(item as StrapiBlockLinkItem)?.target}
+                    rel={(item as StrapiBlockLinkItem)?.rel}
+                    data={(item as StrapiBlockLinkItem).children}
+                    theme={theme}
+                />
+            );
+        }
+
+        return null;
+    })
+}
