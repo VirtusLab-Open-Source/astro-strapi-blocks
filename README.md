@@ -130,6 +130,15 @@ type StrapiBlockUserTheme = {
       h4?: string[];
       h5?: string[];
       h6?: string[];
+      content: {
+        block?: string[];
+        span?: string[];
+        strong?: string[];
+        italic?: string[];
+        underline?: string[];
+        strikethrough?: string[];
+        link?: string[];
+      } 
     };
     paragraph?: {
       block?: string[];
@@ -185,7 +194,8 @@ const StrapiBlockThemeDefault = {
     h3: ['text-2xl', 'font-bold', 'mb-3'],
     h4: ['text-xl', 'font-bold', 'mb-2'],
     h5: ['text-lg', 'font-bold', 'mb-2'],
-    h6: ['text-base', 'font-bold', 'mb-2']
+    h6: ['text-base', 'font-bold', 'mb-2'],
+    content: {},
   },
   paragraph: {
     block: ['mb-4'],

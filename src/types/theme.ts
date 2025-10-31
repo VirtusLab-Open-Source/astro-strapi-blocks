@@ -10,6 +10,7 @@ export type StrapiBlockThemeHeading = {
     h4: Array<string>;
     h5: Array<string>;
     h6: Array<string>;
+    content: StrapiBlockThemeParagraph;
 }
 
 export type StrapiBlockThemeParagraph = {
