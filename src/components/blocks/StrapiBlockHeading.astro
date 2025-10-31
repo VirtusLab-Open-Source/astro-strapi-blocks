@@ -1,8 +1,13 @@
 ---
 import StrapiBlockCustom from "./StrapiBlockCustom.astro";
+import StrapiBlockTextItemComponent from "./items/StrapiBlockTextItem.astro";
 
 import { StrapiBlockThemeDefault, getPropertyClass } from "../../lib";
-import type { AstroComponent, StrapiBlockTextItem, StrapiBlockTheme } from "../../types";
+import type {
+    AstroComponent,
+    StrapiBlockTextItem,
+    StrapiBlockTheme,
+} from "../../types";
 
 type Props = {
     level: number;
@@ -12,23 +17,53 @@ type Props = {
     theme: StrapiBlockTheme;
 };
 
-const { data, level = 2, class: classes = '', theme = StrapiBlockThemeDefault, block } = Astro.props;
+const {
+    data,
+    level = 2,
+    class: classes = "",
+    theme = StrapiBlockThemeDefault,
+    block,
+} = Astro.props;
 
 const sanitizedData = data.filter(({ text }: StrapiBlockTextItem) => text);
-const headingTag = `h${level}` as keyof StrapiBlockTheme['heading'];
+const headingTag = `h${level}` as keyof StrapiBlockTheme["heading"];
 const Tag = headingTag;
 
-const blockClasses = classes ? classes.split(' ') : [];
-const headingClasses = [...blockClasses, ...getPropertyClass(theme, ['heading', headingTag])];
-
+const blockClasses = classes ? classes.split(" ") : [];
+const headingClasses = [
+    ...blockClasses,
+    ...getPropertyClass(theme, ["heading", headingTag]),
+];
 ---
+
 {
     sanitizedData.length && (
         <>
-            { block && (<StrapiBlockCustom {...Astro.props} comp={block} data={sanitizedData[0]} />)}
-            { !block && (sanitizedData.map(({ text }: StrapiBlockTextItem) => {
-                    return (<Tag class={headingClasses.join(' ')}>{text}</Tag>);
-                })
+            {block && (
+                <StrapiBlockCustom
+                    {...Astro.props}
+                    comp={block}
+                    data={sanitizedData[0]}
+                />
+            )}
+            {!block &&
+                sanitizedData.map(({ text }: StrapiBlockTextItem) => {
+                    return <Tag class={headingClasses.join(" ")}>{text}</Tag>;
+                })}
+            {!block && (
+                <Tag class={headingClasses.join(" ")}>
+                    {sanitizedData.map((item: StrapiBlockTextItem) => {
+                        if (typeof item === "string") {
+                            return item;
+                        }
+                        return (
+                            <StrapiBlockTextItemComponent
+                                data={item}
+                                theme={theme.heading.content || theme.paragraph || {}}
+                            />
+                        );
+                    })}
+                </Tag>
             )}
         </>
     )

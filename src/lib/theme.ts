@@ -10,6 +10,15 @@ export const StrapiBlockThemeDefault: StrapiBlockTheme = {
         h4: ['text-3xl', 'font-bold', 'mb-4'],
         h5: ['text-2xl', 'font-bold', 'mb-4'],
         h6: ['text-xl', 'font-bold', 'mb-4'],
+        content: {
+            block: [],
+            span: [],
+            strong: ['font-bold'],
+            italic: ['italic'],
+            underline: ['underline'],
+            strikethrough: ['line-through'],
+            link: ['text-blue-500', 'underline', 'hover:text-blue-800'],
+        },
     },
     paragraph: {
         block: ['astro-strapi-block-paragraph', 'mb-4'],
