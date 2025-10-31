@@ -195,7 +195,15 @@ const StrapiBlockThemeDefault = {
     h4: ['text-xl', 'font-bold', 'mb-2'],
     h5: ['text-lg', 'font-bold', 'mb-2'],
     h6: ['text-base', 'font-bold', 'mb-2'],
-    content: {},
+    content: {
+      block: [],
+      span: [],
+      strong: ['font-bold'],
+      italic: ['italic'],
+      underline: ['underline'],
+      strikethrough: ['line-through'],
+      link: ['text-blue-500', 'underline', 'hover:text-blue-800'],
+    },
   },
   paragraph: {
     block: ['mb-4'],
