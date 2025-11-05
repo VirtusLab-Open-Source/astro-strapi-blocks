@@ -33,6 +33,7 @@ export type StrapiBlockThemeList = {
     block: StrapiBlockThemeBlock;
     ordered: Array<string>;
     unordered: Array<string>;
+    nested: Array<string>;
     item: Array<string>;
 }
 

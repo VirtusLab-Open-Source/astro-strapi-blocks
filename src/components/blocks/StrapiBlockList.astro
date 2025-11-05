@@ -7,6 +7,7 @@ import { renderPropertyClasses, StrapiBlockThemeDefault } from "../../lib";
 import type {
     AstroComponent,
     StrapiBlockListItem,
+    StrapiBlockList,
     StrapiBlockListType,
     StrapiBlockTheme,
 } from "../../types";
@@ -14,43 +15,99 @@ import type {
 type Props<FontColors extends string> = {
     class?: string;
     format: StrapiBlockListType;
+    nested: boolean;
     color?: FontColors;
     data: Array<StrapiBlockListItem>;
     block?: AstroComponent;
     theme: StrapiBlockTheme;
 };
 
-const { data, format = "unordered", class: classes = '', theme = StrapiBlockThemeDefault, block } = Astro.props;
+const {
+    data,
+    format = "unordered",
+    class: classes = "",
+    theme = StrapiBlockThemeDefault,
+    nested,
+    block,
+} = Astro.props;
 
 const renderData = data.filter(
     (item: StrapiBlockListItem) => item.children && item.children.length,
 );
+const nestedClasses = nested
+    ? renderPropertyClasses(theme, ["list", "nested"])
+    : "";
 ---
-{ block && (<StrapiBlockCustom {...Astro.props} comp={block} data={renderData} />)}
-{ !block && (<div class={classes}>
-    {
-        format === "unordered" && (
-            <List tag="ul" class={renderPropertyClasses(theme, ['list', 'unordered'])}>
-                {renderData.map((item: StrapiBlockListItem) => (
-                    <ListItem 
-                        class={renderPropertyClasses(theme, ['list', 'item'])}
-                        data={item.children}
-                        theme={theme} />
-                ))}
-            </List>
-        )
-    }
 
-    {
-        format === "ordered" && (
-            <List tag="ol" class={renderPropertyClasses(theme, ['list', 'ordered'])}>
-                {renderData.map((item: StrapiBlockListItem) => (
-                    <ListItem 
-                    class={renderPropertyClasses(theme, ['list', 'item'])} 
-                    data={item.children} 
-                    theme={theme} />
-                ))}
-            </List>
-        )
-    }
-</div>)}
+{block && <StrapiBlockCustom {...Astro.props} comp={block} data={renderData} />}
+{
+    !block && (
+        <div class={classes}>
+            {format === "unordered" && (
+                <List
+                    tag="ul"
+                    class={[
+                        renderPropertyClasses(theme, ["list", "unordered"]),
+                        nestedClasses,
+                    ]
+                        .filter(Boolean)
+                        .join(" ")}
+                >
+                    {renderData.map(
+                        (
+                            item: StrapiBlockListItem | StrapiBlockList,
+                            index: number,
+                        ) => (
+                            <ListItem
+                                no={index + 1}
+                                class={renderPropertyClasses(theme, [
+                                    "list",
+                                    "item",
+                                ])}
+                                data={item.children}
+                                parentFormat={
+                                    item.type === "list" ? item.format : format
+                                }
+                                nested={item.type === "list"}
+                                theme={theme}
+                            />
+                        ),
+                    )}
+                </List>
+            )}
+
+            {format === "ordered" && (
+                <List
+                    tag="ol"
+                    class={[
+                        renderPropertyClasses(theme, ["list", "ordered"]),
+                        nestedClasses,
+                    ]
+                        .filter(Boolean)
+                        .join(" ")}
+                >
+                    {renderData.map(
+                        (
+                            item: StrapiBlockListItem | StrapiBlockList,
+                            index: number,
+                        ) => (
+                            <ListItem
+                                no={index + 1}
+                                class={renderPropertyClasses(theme, [
+                                    "list",
+                                    "item",
+                                ])}
+                                data={item.children}
+                                parentFormat={
+                                    item.type === "list" ? item.format : format
+                                }
+                                nested={item.type === "list"}
+                                theme={theme}
+                            />
+                        ),
+                    )}
+                </List>
+            )}
+        </div>
+    )
+}

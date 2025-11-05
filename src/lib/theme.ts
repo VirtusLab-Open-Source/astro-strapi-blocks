@@ -43,6 +43,7 @@ export const StrapiBlockThemeDefault: StrapiBlockTheme = {
         ordered: ['list-decimal', 'pl-6'],
         unordered: ['list-disc', 'pl-6'],
         item: ['mb-2', 'last:mb-0'],
+        nested: ['mb-2'],
     },
     code: {
         block: [
