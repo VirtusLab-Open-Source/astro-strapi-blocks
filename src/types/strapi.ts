@@ -42,7 +42,7 @@ export type StrapiBlockListItem = {
     children: Array<StrapiBlockNode>;
 };
 
-export type StrapiBlockNode = StrapiBlockTextItem | StrapiBlockLinkItem;
+export type StrapiBlockNode = StrapiBlockTextItem | StrapiBlockLinkItem | StrapiBlockListItem | StrapiBlockList;
 
 export type StrapiBlockHeading = {
     type: 'heading';

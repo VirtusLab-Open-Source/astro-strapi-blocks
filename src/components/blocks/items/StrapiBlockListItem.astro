@@ -1,27 +1,67 @@
 ---
 import SanitizedNode from "./StrapiBlockNode.astro";
+import StrapiList from "../StrapiBlockList.astro";
 import type {
     StrapiBlockListItem,
+    StrapiBlockList,
     StrapiBlockNode,
-    StrapiBlockTheme
+    StrapiBlockTheme,
+    StrapiBlockListType,
 } from "../../../types";
 import { sanitizeStrapiNodeData, StrapiBlockThemeDefault } from "../../../lib";
-
 type Props = {
     class?: string;
+    no: number;
+    parentFormat: StrapiBlockListType;
+    nested: boolean;
     data: Array<StrapiBlockNode>;
     theme: StrapiBlockTheme;
 };
 
-const { data, class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
+const {
+    no,
+    data,
+    class: classes = "",
+    theme = StrapiBlockThemeDefault,
+    parentFormat,
+    nested,
+} = Astro.props;
 
 const sanitizedData = sanitizeStrapiNodeData(data);
+const hasTextContent = sanitizedData.length > 0;
+const nestedListItems = data.filter(
+    (item: StrapiBlockNode) => item.type === "list-item",
+);
+const nestedList =
+    nestedListItems.length > 0
+        ? ({
+              type: "list",
+              format: parentFormat,
+              children: nestedListItems,
+          } as StrapiBlockList)
+        : null;
 ---
 
 {
-    sanitizedData.length && (
+    hasTextContent && (
         <li class={classes}>
             <SanitizedNode data={sanitizedData} theme={theme.paragraph} />
         </li>
+    )
+}
+{
+    nestedList && (
+        <>
+            { hasTextContent && (<li class={classes}>
+                    <SanitizedNode data={sanitizedData} theme={theme.paragraph} />
+                </li>
+            )}
+            <StrapiList
+                data={nestedList.children}
+                format={nestedList.format}
+                nested={nested}
+                theme={theme}
+            />
+        </>
     )
 }

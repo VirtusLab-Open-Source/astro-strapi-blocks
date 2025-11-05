@@ -163,6 +163,7 @@ type StrapiBlockUserTheme = {
       ordered?: string[];
       unordered?: string[];
       item?: string[];
+      nested?: string[];
     };
     code?: {
       block?: string[];
@@ -186,58 +187,59 @@ Here's the complete default theme object that you can use as a reference when ex
 
 ```typescript
 const StrapiBlockThemeDefault = {
-  block: ['mb-4'],
-  heading: {
-    block: ['mb-4'],
-    h1: ['text-4xl', 'font-bold', 'mb-4'],
-    h2: ['text-3xl', 'font-bold', 'mb-3'],
-    h3: ['text-2xl', 'font-bold', 'mb-3'],
-    h4: ['text-xl', 'font-bold', 'mb-2'],
-    h5: ['text-lg', 'font-bold', 'mb-2'],
-    h6: ['text-base', 'font-bold', 'mb-2'],
-    content: {
-      block: [],
-      span: [],
-      strong: ['font-bold'],
-      italic: ['italic'],
-      underline: ['underline'],
-      strikethrough: ['line-through'],
-      link: ['text-blue-500', 'underline', 'hover:text-blue-800'],
+    block: ['astro-strapi-block'],
+    heading: {
+        block: ['astro-strapi-block-heading'],
+        h1: ['text-6xl', 'font-bold', 'mb-4'],
+        h2: ['text-5xl', 'font-bold', 'mb-4'],
+        h3: ['text-4xl', 'font-bold', 'mb-4'],
+        h4: ['text-3xl', 'font-bold', 'mb-4'],
+        h5: ['text-2xl', 'font-bold', 'mb-4'],
+        h6: ['text-xl', 'font-bold', 'mb-4'],
+        content: {
+            block: [],
+            span: [],
+            strong: ['font-bold'],
+            italic: ['italic'],
+            underline: ['underline'],
+            strikethrough: ['line-through'],
+            link: ['text-blue-500', 'underline', 'hover:text-blue-800']
+        },
     },
-  },
-  paragraph: {
-    block: ['mb-4'],
-    span: [''],
-    strong: ['font-bold'],
-    italic: ['italic'],
-    underline: ['underline'],
-    strikethrough: ['line-through'],
-    link: ['text-blue-600', 'hover:underline']
-  },
-  quote: {
-    block: ['border-l-4', 'border-gray-300', 'pl-4', 'italic', 'mb-4'],
-    span: [''],
-    strong: ['font-bold'],
-    italic: ['italic'],
-    underline: ['underline'],
-    strikethrough: ['line-through'],
-    link: ['text-blue-600', 'hover:underline']
-  },
-  list: {
-    block: ['mb-4'],
-    ordered: ['list-decimal', 'list-inside'],
-    unordered: ['list-disc', 'list-inside'],
-    item: ['mb-1']
-  },
-  code: {
-    block: ['bg-gray-100', 'p-4', 'rounded', 'mb-4', 'font-mono', 'text-sm'],
-    language: ['text-gray-600', 'text-sm', 'mb-2']
-  },
-  image: {
-    block: ['mb-4'],
-    image: ['max-w-full', 'h-auto', 'rounded'],
-    caption: ['text-gray-600', 'text-sm mt-2']
-  }
+    paragraph: {
+        block: ['astro-strapi-block-paragraph', 'mb-4'],
+        span: [],
+        strong: ['font-bold'],
+        italic: ['italic'],
+        underline: ['underline'],
+        strikethrough: ['line-through'],
+        link: ['text-blue-500', 'underline', 'hover:text-blue-800']
+    },
+    quote: {
+        block: ['astro-strapi-block-quote', 'border-l-4', 'border-gray-300', 'pl-4', 'mb-4'],
+        span: [],
+        strong: ['font-bold'],
+        italic: ['italic'],
+        underline: ['underline'],
+        strikethrough: ['line-through'],
+        link: ['text-blue-500', 'underline', 'hover:text-blue-800']
+    },
+    list: {
+        block: ['astro-strapi-block-list', 'my-4'],
+        ordered: ['list-decimal', 'pl-6'],
+        unordered: ['list-disc', 'pl-6'],
+        item: ['mb-2', 'last:mb-0'],
+        nested: ['mb-2']
+    },
+    code: {
+        block: ['astro-strapi-block-code', 'mb-4', 'bg-gray-200', 'p-4', 'rounded-md', 'text-sm', 'font-mono', 'last:mb-0'],
+        language: ['astro-strapi-block-code-language', 'inline-block', 'text-xs', 'font-sans', 'font-medium', 'bg-gray-300', 'py-1', 'px-4', 'mb-2', 'rounded-full', 'text-gray-700']
+    },
+    image: {
+        block: ['mb-4', 'w-full', 'h-auto', 'flex', 'items-center', 'justify-center', 'last:mb-0'],
+        image: ['rounded-md'],
+        caption: ['text-sm', 'mb-2', 'text-gray-900', 'text-center', 'italic']
+    },
 }
 ```
 
@@ -374,6 +376,7 @@ type ListBlockProps = {
   class?: string;                // Additional CSS classes
   theme: StrapiBlockTheme;       // Theme configuration
   format: 'ordered' | 'unordered'; // List type
+  nested: boolean;               // Is the list nested?
 }
 ```
 
