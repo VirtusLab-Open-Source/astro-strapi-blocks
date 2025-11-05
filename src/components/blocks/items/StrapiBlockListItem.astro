@@ -1,27 +1,47 @@
 ---
 import SanitizedNode from "./StrapiBlockNode.astro";
+import StrapiList from "../StrapiBlockList.astro";
 import type {
     StrapiBlockListItem,
+    StrapiBlockList,
     StrapiBlockNode,
-    StrapiBlockTheme
+    StrapiBlockTheme,
 } from "../../../types";
 import { sanitizeStrapiNodeData, StrapiBlockThemeDefault } from "../../../lib";
-
 type Props = {
     class?: string;
     data: Array<StrapiBlockNode>;
     theme: StrapiBlockTheme;
 };
 
-const { data, class: classes = '', theme = StrapiBlockThemeDefault } = Astro.props;
+const {
+    data,
+    class: classes = "",
+    theme = StrapiBlockThemeDefault,
+} = Astro.props;
 
 const sanitizedData = sanitizeStrapiNodeData(data);
+const nestedList = data.filter(
+    (item: StrapiBlockNode) => item.type === "list",
+);
 ---
 
 {
-    sanitizedData.length && (
+    (sanitizedData.length > 0) && (
         <li class={classes}>
             <SanitizedNode data={sanitizedData} theme={theme.paragraph} />
         </li>
     )
+}
+{
+    (nestedList.length > 0) &&
+        nestedList.map((item: StrapiBlockList) => (
+            <li class={classes}>
+                <StrapiList
+                    data={item.children}
+                    format={item.format}
+                    theme={theme}
+                />
+            </li>
+        ))
 }
