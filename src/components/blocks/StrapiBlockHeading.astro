@@ -46,10 +46,6 @@ const headingClasses = [
                     data={sanitizedData[0]}
                 />
             )}
-            {!block &&
-                sanitizedData.map(({ text }: StrapiBlockTextItem) => {
-                    return <Tag class={headingClasses.join(" ")}>{text}</Tag>;
-                })}
             {!block && (
                 <Tag class={headingClasses.join(" ")}>
                     {sanitizedData.map((item: StrapiBlockTextItem) => {
