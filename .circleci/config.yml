@@ -4,7 +4,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: cimg/node:20.12.2
+      - image: cimg/node:22.22.1
     working_directory: ~/repo
     resource_class: large
     steps:
@@ -53,7 +53,7 @@ jobs:
           paths: .
   deploy:
     docker:
-      - image: cimg/node:20.12.2
+      - image: cimg/node:22.22.1
     working_directory: ~/repo
     resource_class: large
     steps:
@@ -68,7 +68,7 @@ jobs:
           command: npm publish --tag latest
   deployBeta:
     docker:
-      - image: cimg/node:20.12.2
+      - image: cimg/node:22.22.1
     working_directory: ~/repo
     resource_class: large
     steps:
