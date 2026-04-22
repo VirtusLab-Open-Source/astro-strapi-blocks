@@ -51,7 +51,7 @@ npm install @sensinum/astro-strapi-blocks@latest
   - 📌 Headers (H1 - H6)
   - 📝 Paragraph with formatting (italic, bold, underline, strikethrough, link)
   - 📑 Quote with formatting (italic, bold, underline, strikethrough, link)
-  - 📋 List (ordered and unordered)
+  - 📋 List (ordered and unordered, nested lists with per-level `indent` theme)
   - 💻 Code blocks
   - 🖼️ Image blocks
 - 🎨 Flexible block class configuration for custom styling
@@ -164,6 +164,10 @@ type StrapiBlockUserTheme = {
       unordered?: string[];
       item?: string[];
       nested?: string[];
+      indent?: {
+        ordered?: string[];
+        unordered?: string[];
+      };
     };
     code?: {
       block?: string[];
@@ -226,10 +230,18 @@ const StrapiBlockThemeDefault = {
     },
     list: {
         block: ['astro-strapi-block-list', 'my-4'],
-        ordered: ['list-decimal', 'pl-6'],
-        unordered: ['list-disc', 'pl-6'],
+        ordered: ['pl-6'],
+        unordered: ['pl-6'],
         item: ['mb-2', 'last:mb-0'],
-        nested: ['mb-2']
+        nested: ['mb-2'],
+        indent: {
+            ordered: [
+                'list-decimal', 'list-[lower-latin]', 'list-[lower-roman]', 'list-[upper-latin]', 'list-[upper-roman]', 'list-decimal',
+            ],
+            unordered: [
+                'list-disc', 'list-[circle]', 'list-[square]', 'list-disk', 'list-[circle]', 'list-[square]',
+            ],
+        },
     },
     code: {
         block: ['astro-strapi-block-code', 'mb-4', 'bg-gray-200', 'p-4', 'rounded-md', 'text-sm', 'font-mono', 'last:mb-0'],
@@ -244,6 +256,28 @@ const StrapiBlockThemeDefault = {
 ```
 
 This default theme provides a clean, modern look using Tailwind CSS classes. You can use this as a starting point for your custom themes.
+
+#### Lists: nested lists and `indent`
+
+List styling is split between the base list (`list.ordered` / `list.unordered`), list items (`list.item`), optional spacing when the tree contains sublists (`list.nested`), and **per–nesting-level** marker classes (`list.indent`).
+
+- **`list.indent.ordered`** and **`list.indent.unordered`** are **arrays of class strings**: index `0` is used for the top-level list, index `1` for the first nested list, and so on. The renderer uses Strapi’s optional `indentLevel` on a `list` node so that, when a child list is flagged with `indentLevel`, the depth is incremented for that subtree. If the index is out of range, no extra indent class is applied for that level.
+- The theme helpers support a **three-segment** path for this branch: `getPropertyClass(theme, ['list', 'indent', 'ordered' | 'unordered'])` returns that array, and you can pick a single level with `[indentLevel]`. The two-segment `renderPropertyClasses(theme, ['list', 'ordered' | 'unordered'])` (and the same for `item`, `nested`, etc.) is unchanged. Using `renderPropertyClasses(theme, ['list', 'indent', format])` **joins the entire** `indent` array into one class string, which is appropriate only if you want all marker utilities on one element; for per-level markers, use `getPropertyClass` and index as above.
+
+Example — extend only nested marker styles (Tailwind list-style steps):
+
+```typescript
+theme={{
+  extend: {
+    list: {
+      indent: {
+        ordered: ['list-decimal', 'list-[lower-alpha]', 'list-[lower-roman]'],
+        unordered: ['list-disc', 'list-[circle]', 'list-[square]'],
+      },
+    },
+  },
+}}
+```
 
 #### Examples
 
@@ -372,13 +406,15 @@ type QuoteBlockProps = {
 ##### List Block
 ```typescript
 type ListBlockProps = {
-  data: Array<StrapiBlockNode>;  // List items
-  class?: string;                // Additional CSS classes
-  theme: StrapiBlockTheme;       // Theme configuration
+  data: Array<StrapiBlockListItem | StrapiBlockList>; // List items and nested lists
+  class?: string;                 // Additional CSS classes
+  theme: StrapiBlockTheme;        // Theme configuration
   format: 'ordered' | 'unordered'; // List type
-  nested: boolean;               // Is the list nested?
+  nested?: boolean;               // True when the tree contains sublists
 }
 ```
+
+`StrapiBlockList` nodes in `data` may include an optional `indentLevel` field from Strapi; the default list component uses it together with `theme.list.indent` to choose list-style classes by nesting depth. Import `StrapiBlockListItem` and `StrapiBlockList` from the package types when you type custom list blocks.
 
 ##### Code Block
 ```typescript

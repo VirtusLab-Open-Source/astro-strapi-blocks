@@ -35,6 +35,10 @@ export type StrapiBlockThemeList = {
     unordered: Array<string>;
     nested: Array<string>;
     item: Array<string>;
+    indent: {
+        ordered: Array<string>;
+        unordered: Array<string>;
+    };
 }
 
 export type StrapiBlockThemeCode = {

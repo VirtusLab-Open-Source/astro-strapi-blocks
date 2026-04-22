@@ -1,0 +1,93 @@
+---
+import ListItem from "./StrapiBlockListItem.astro";
+import List from "./StrapiBlockList.astro";
+
+import { getPropertyClass, renderPropertyClasses, StrapiBlockThemeDefault } from "../../../lib";
+import type {
+    AstroComponent,
+    StrapiBlockListItem,
+    StrapiBlockList,
+    StrapiBlockListType,
+    StrapiBlockTheme,
+} from "../../../types";
+
+type Props = {
+    class?: string;
+    tag?: "ul" | "ol";
+    format: StrapiBlockListType;
+    indentLevel?: number;
+    nested: boolean;
+    data: Array<StrapiBlockListItem | StrapiBlockList>;
+    theme: StrapiBlockTheme;
+    nestedListComponent?: AstroComponent;
+};
+
+const {
+    data,
+    format = "unordered",
+    class: classes = "",
+    indentLevel = 0,
+    theme = StrapiBlockThemeDefault,
+    nested,
+    nestedListComponent,
+} = Astro.props;
+
+const nestedClasses = nested
+    ? renderPropertyClasses(theme, ["list", "nested"])
+    : "";
+const listTag = format === "unordered" ? "ul" : "ol";
+const indentClasses = getPropertyClass(theme, ["list", "indent", format])[indentLevel] || "";
+const NestedListComponent = nestedListComponent || null;
+---
+
+<List
+    tag={listTag}
+    class={[
+        renderPropertyClasses(theme, ["list", format]),
+        nestedClasses,
+        indentClasses,
+    ]
+        .filter(Boolean)
+        .join(" ")}
+>
+    {
+        data.map(
+            (item: StrapiBlockListItem | StrapiBlockList, index: number) => (
+                <>
+                    {item.type === "list-item" && (
+                        <ListItem
+                            no={index + 1}
+                            class={renderPropertyClasses(theme, [
+                                "list",
+                                "item",
+                            ])}
+                            data={item.children}
+                            theme={theme}
+                        />
+                    )}
+                    {item.type === "list" &&
+                        NestedListComponent &&
+                        item.children &&
+                        item.children.length > 0 && (
+                            <NestedListComponent
+                                data={item.children}
+                                format={item.format}
+                                indentLevel={item.indentLevel ? indentLevel + 1 : indentLevel}
+                                nested={
+                                    item.children.filter(
+                                        (
+                                            item:
+                                                | StrapiBlockListItem
+                                                | StrapiBlockList,
+                                        ) => item.type === "list",
+                                    ).length > 0
+                                }
+                                theme={theme}
+                                nestedListComponent={NestedListComponent}
+                            />
+                        )}
+                </>
+            ),
+        )
+    }
+</List>

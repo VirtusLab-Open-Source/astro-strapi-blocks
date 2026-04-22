@@ -1,4 +1,4 @@
-import type { StrapiBlock, StrapiBlockTheme, StrapiBlockThemeCode, StrapiBlockThemeHeading, StrapiBlockThemeList, StrapiBlockThemeParagraph, StrapiBlockThemeQuote, StrapiBlockUserTheme, StrapiBlockThemeImage, StrapiRenderClassesType, StrapiRenderClassesPropretyType, DeepPartial } from '../types';
+import type { StrapiBlock, StrapiBlockListType, StrapiBlockTheme, StrapiBlockThemeCode, StrapiBlockThemeHeading, StrapiBlockThemeList, StrapiBlockThemeParagraph, StrapiBlockThemeQuote, StrapiBlockUserTheme, StrapiBlockThemeImage, StrapiRenderClassesType, StrapiRenderClassesPropretyType, DeepPartial } from '../types';
 
 export const StrapiBlockThemeDefault: StrapiBlockTheme = {
     block: ['astro-strapi-block'],
@@ -40,10 +40,14 @@ export const StrapiBlockThemeDefault: StrapiBlockTheme = {
     },
     list: {
         block: ['astro-strapi-block-list', 'my-4'],
-        ordered: ['list-decimal', 'pl-6'],
-        unordered: ['list-disc', 'pl-6'],
+        ordered: ['pl-6'],
+        unordered: ['pl-6'],
         item: ['mb-2', 'last:mb-0'],
         nested: ['mb-2'],
+        indent: {
+            ordered: ['list-decimal', 'list-[lower-latin]', 'list-[lower-roman]', 'list-[upper-latin]', 'list-[upper-roman]', 'list-decimal'],
+            unordered: ['list-disc', 'list-[circle]', 'list-[square]', 'list-disk', 'list-[circle]', 'list-[square]'],
+        }
     },
     code: {
         block: [
@@ -111,19 +115,35 @@ export const buildThemeObject = (theme: StrapiBlockUserTheme, defaultTheme: Stra
     return result;
 };
 
-export const getPropertyClass = <T extends keyof StrapiBlockTheme>(theme: StrapiBlockTheme, path: T | [T, keyof StrapiBlockTheme[T]]): Array<string> => {
-    const [rootLevel, subLevel] = Array.isArray(path) ? path : [path];
+function getPropertyClassImpl(theme: StrapiBlockTheme, path: keyof StrapiBlockTheme | ReadonlyArray<string | number>): Array<string> {
+    const pathArr = Array.isArray(path) ? path : [path];
+    let current: any = theme;
 
-    if (rootLevel && subLevel && theme[rootLevel] && typeof theme[rootLevel] === 'object') {
-        const nestedValue = (theme[rootLevel] as Record<string, string[]>)[subLevel as string];
-        return Array.isArray(nestedValue) ? nestedValue : [];
-    } else if (rootLevel && theme[rootLevel]) {
-        const value = theme[rootLevel];
-        return Array.isArray(value) ? value : [];
+    for (let i = 0; i < pathArr.length; i++) {
+        if (!current) break;
+        current = current[pathArr[i]];
     }
 
-    return [];
-};
+    return Array.isArray(current) ? current : [];
+}
 
-export const renderPropertyClasses = <T extends keyof StrapiBlockTheme>(theme: StrapiBlockTheme, path: T | [T, keyof StrapiBlockTheme[T]]): string =>
-    getPropertyClass(theme, path).join(' ');
+export function getPropertyClass(
+    theme: StrapiBlockTheme,
+    path: ['list', 'indent', StrapiBlockListType],
+): Array<string>;
+export function getPropertyClass<T extends keyof StrapiBlockTheme, K extends keyof StrapiBlockTheme[T]>(
+    theme: StrapiBlockTheme,
+    path: T | [T, K],
+): Array<string>;
+export function getPropertyClass(theme: StrapiBlockTheme, path: keyof StrapiBlockTheme | ReadonlyArray<string | number>): Array<string> {
+    return getPropertyClassImpl(theme, path);
+}
+
+export function renderPropertyClasses(
+    theme: StrapiBlockTheme,
+    path: ['list', 'indent', StrapiBlockListType],
+): string;
+export function renderPropertyClasses<T extends keyof StrapiBlockTheme>(theme: StrapiBlockTheme, path: T | [T, keyof StrapiBlockTheme[T]]): string;
+export function renderPropertyClasses(theme: StrapiBlockTheme, path: keyof StrapiBlockTheme | ReadonlyArray<string | number>): string {
+    return getPropertyClassImpl(theme, path).join(' ');
+}

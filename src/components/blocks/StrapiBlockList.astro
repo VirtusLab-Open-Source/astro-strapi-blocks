@@ -1,23 +1,23 @@
 ---
-import ListItem from "./items/StrapiBlockListItem.astro";
-import List from "./items/StrapiBlockList.astro";
 import StrapiBlockCustom from "./StrapiBlockCustom.astro";
+import StrapiListNested from "./items/StrapiBlockListNested.astro";
 
-import { renderPropertyClasses, StrapiBlockThemeDefault } from "../../lib";
+import { StrapiBlockThemeDefault } from "../../lib";
 import type {
     AstroComponent,
     StrapiBlockListItem,
     StrapiBlockList,
     StrapiBlockListType,
     StrapiBlockTheme,
+    StrapiBlockNode,
 } from "../../types";
 
 type Props<FontColors extends string> = {
     class?: string;
     format: StrapiBlockListType;
-    nested: boolean;
+    nested?: boolean;
     color?: FontColors;
-    data: Array<StrapiBlockListItem>;
+    data: Array<StrapiBlockListItem | StrapiBlockList>;
     block?: AstroComponent;
     theme: StrapiBlockTheme;
 };
@@ -34,80 +34,20 @@ const {
 const renderData = data.filter(
     (item: StrapiBlockListItem) => item.children && item.children.length,
 );
-const nestedClasses = nested
-    ? renderPropertyClasses(theme, ["list", "nested"])
-    : "";
+const hasNestedList = renderData.filter((item: StrapiBlockListItem | StrapiBlockList) => item.type === "list").length > 0;
 ---
 
 {block && <StrapiBlockCustom {...Astro.props} comp={block} data={renderData} />}
 {
     !block && (
         <div class={classes}>
-            {format === "unordered" && (
-                <List
-                    tag="ul"
-                    class={[
-                        renderPropertyClasses(theme, ["list", "unordered"]),
-                        nestedClasses,
-                    ]
-                        .filter(Boolean)
-                        .join(" ")}
-                >
-                    {renderData.map(
-                        (
-                            item: StrapiBlockListItem | StrapiBlockList,
-                            index: number,
-                        ) => (
-                            <ListItem
-                                no={index + 1}
-                                class={renderPropertyClasses(theme, [
-                                    "list",
-                                    "item",
-                                ])}
-                                data={item.children}
-                                parentFormat={
-                                    item.type === "list" ? item.format : format
-                                }
-                                nested={item.type === "list"}
-                                theme={theme}
-                            />
-                        ),
-                    )}
-                </List>
-            )}
-
-            {format === "ordered" && (
-                <List
-                    tag="ol"
-                    class={[
-                        renderPropertyClasses(theme, ["list", "ordered"]),
-                        nestedClasses,
-                    ]
-                        .filter(Boolean)
-                        .join(" ")}
-                >
-                    {renderData.map(
-                        (
-                            item: StrapiBlockListItem | StrapiBlockList,
-                            index: number,
-                        ) => (
-                            <ListItem
-                                no={index + 1}
-                                class={renderPropertyClasses(theme, [
-                                    "list",
-                                    "item",
-                                ])}
-                                data={item.children}
-                                parentFormat={
-                                    item.type === "list" ? item.format : format
-                                }
-                                nested={item.type === "list"}
-                                theme={theme}
-                            />
-                        ),
-                    )}
-                </List>
-            )}
+            <StrapiListNested
+                data={renderData}
+                format={format}
+                nested={nested || hasNestedList}
+                theme={theme}
+                nestedListComponent={StrapiListNested}
+            />
         </div>
     )
 }

@@ -60,6 +60,7 @@ export type StrapiBlockListType = 'ordered' | 'unordered'
 export type StrapiBlockList = {
     type: 'list';
     format: StrapiBlockListType;
+    indentLevel?: number;
     children: Array<StrapiBlockListItem>
 };
 
