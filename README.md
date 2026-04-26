@@ -25,6 +25,7 @@
 - 📋 [Requirements](#requirements)
 - 📦 [Installation](#installation)
 - 🚀 [Features](#features)
+- 🤖 [AI-Native support](#ai-native-support)
 - 🖥️ [Usage](#usage)
 - ⚙️ [Configuration](#configuration)
 - 🔧 [Development](#development)
@@ -59,6 +60,19 @@ npm install @sensinum/astro-strapi-blocks@latest
   - 🎯 Override default block rendering
   - ⚡ Full control over block output
 - 🛠️ TypeScript support with full type definitions
+
+## 🤖 AI-Native support
+
+The repository includes agent-oriented materials so any coding assistant (IDE agents, CLIs, or models with project context) can apply consistent patterns for **integrating** `StrapiBlocks`, **theming** with `extend` / `overwrite`, **wiring Strapi data** into Astro, and **custom block** overrides.
+
+| Resource | Path | Purpose |
+|----------|------|---------|
+| Agent overview | [`.ai/AGENTS.md`](.ai/AGENTS.md) | Entry point: where to look and how to use the skill in tooling |
+| Agent skill | [`.ai/astro-strapi-blocks/SKILL.md`](.ai/astro-strapi-blocks/SKILL.md) | Step-by-step workflow, checklist, and conventions |
+| Quick reference | [`.ai/astro-strapi-blocks/reference.md`](.ai/astro-strapi-blocks/reference.md) | Theme paths and merge behavior |
+| Cursor rules | [`.cursor/rules/astro-strapi-blocks.mdc`](.cursor/rules/astro-strapi-blocks.mdc) | Project rules for `.astro` / `.ts` when using Cursor |
+
+**In another repo:** copy the `.ai/` folder (and optionally `.cursor/rules/`) into your app, or point your agent at this package’s `README` plus your local copy of `.ai/`. If you use **Cursor** and want the skill in the default skills location, symlink or copy `.ai/astro-strapi-blocks/` to `.cursor/skills/astro-strapi-blocks/`.
 
 ## 🖥️ Usage
 
