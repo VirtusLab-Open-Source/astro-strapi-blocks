@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  codecov: codecov/codecov@5
+  codecov: codecov/codecov@6.0.0
 jobs:
   test:
     docker:
@@ -44,6 +44,7 @@ jobs:
             yarn test:ci
       - codecov/upload:
           flags: unittest
+          use_pypi: true
       - save_cache:
           paths:
             - ./node_modules
